@@ -9,12 +9,13 @@
 </head>
 
 <body>
-    <canvas id="canvas" width="380" height="570"></canvas>
+    <canvas id="canvas1" width="380" height="570"></canvas>
+    <canvas id="canvas2" width="380" height="570"></canvas>
 </body>
 
 </html>
 <script>
-    var canvas = document.getElementById("canvas"); // 実際に描画が行われる Canvas要素
+    var canvas = document.getElementById("canvas1"); // 実際に描画が行われる Canvas要素
     var stage = new createjs.Stage(canvas); // Stage クラスのインスタンスを作成する
 
     var text = new createjs.Text("Let's Click!", "20px Arial", "#ff7700"); // Text クラスのインスタンスを作成する
@@ -25,8 +26,8 @@
     circle.y = canvas.height * 0.5;
     circle.scaleX = 3;
 
-    stage.addChild(text, circle);
-    stage.update();
+    //stage.addChild(text, circle);
+    //stage.update();
 
     // 画像の先読み処理
     var baseimg = new Image();
@@ -38,7 +39,7 @@
         basemap.scaleX = 1.0 // x方向の拡大率変更
         basemap.scaleY = 1.0 // y方向の拡大率変更
         stage.addChild(basemap);
-        stage.update();
+        //stage.update();
     };
 
     // 画像の先読み処理
@@ -50,13 +51,12 @@
         //bitmap.y = 100;
         bitmap.scaleX = 1.0 // x方向の拡大率変更
         bitmap.scaleY = 1.0 // y方向の拡大率変更
-        stage.addChild(bitmap);
+        stage.addChild(bitmap, text, circle);
         stage.update();
     };
 
     createjs.Ticker.framerate = 40
     createjs.Ticker.addEventListener("tick", function () {
-
         bitmap.scaleX = bitmap.scaleX - bitmap.scaleX * 0.1;
         bitmap.regX = bitmap.image.width / 2;
         bitmap.regY = bitmap.image.height / 2;
