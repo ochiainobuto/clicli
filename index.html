@@ -22,7 +22,7 @@
     var canvas = document.getElementById("canvas1"); // 実際に描画が行われる Canvas要素
     var stage = new createjs.Stage(canvas); // Stage クラスのインスタンスを作成する
 
-    var text = new createjs.Text("Let's Click!5", "20px Arial", "#ff7700"); // Text クラスのインスタンスを作成する
+    var text = new createjs.Text("Let's Click!6", "20px Arial", "#ff7700"); // Text クラスのインスタンスを作成する
 
     var circle = new createjs.Shape();
     circle.graphics.beginFill("red").drawCircle(0, 0, 20);
@@ -118,12 +118,12 @@
     }
 
     // touchmove
-    element.ontouchmove = function (event) {
+    document.ontouchmove = function (event) {
         // 操作開始時の距離
         baseDistance = getDistance(event);
     }
 
-    element.addEventListener('touchend', event => {
+    document.addEventListener('touchend', event => {
         event.preventDefault();
     }, false);
 </script>
