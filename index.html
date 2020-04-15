@@ -122,4 +122,8 @@
         // 操作開始時の距離
         baseDistance = getDistance(event);
     }
+
+    element.addEventListener('touchend', event => {
+        event.preventDefault();
+    }, false);
 </script>
