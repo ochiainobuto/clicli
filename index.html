@@ -87,7 +87,7 @@
         canvas.className = "canvas1_class_pc";
     }
 
-    // var canvas = document.getElementById("canvas1"); // 実際に描画が行われる Canvas要素
+    var canvas = document.getElementById("canvas1"); // 実際に描画が行われる Canvas要素
     var stage = new createjs.Stage(canvas); // Stage クラスのインスタンスを作成する
     var text = new createjs.Text("Let's Click!13", "20px Arial", "#ff7700"); // Text クラスのインスタンスを作成する
 
@@ -189,12 +189,12 @@
     //     baseDistance = getDistance(event);
     // }
 
-    window.onload = function () {
-        document.getElementById("canvas1").ontouchmove = function () {
-            document.getElementById("result").innerHTML = "タッチ中<br>";
-        }
-        document.ontouchmove = function () { event.preventDefault(); }
-    }
+    // window.onload = function () {
+    //     document.getElementById("canvas1").ontouchmove = function () {
+    //         document.getElementById("result").innerHTML = "タッチ中<br>";
+    //     }
+    //     document.ontouchmove = function () { event.preventDefault(); }
+    // }
 
 
     /* ピッチインピッチアウトによる拡大縮小を禁止 */
