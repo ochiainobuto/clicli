@@ -159,29 +159,29 @@
     });
 
     // 基本の距離
-    var baseDistance = 0;
+    // var baseDistance = 0;
 
-    // 距離を測る関数
-    function getDistance(event) {
-        event.preventDefault();
+    // // 距離を測る関数
+    // function getDistance(event) {
+    //     event.preventDefault();
 
-        var touches = event.changedTouches;
+    //     var touches = event.changedTouches;
 
-        // 2本以上の指の場合だけ処理
-        if (touches.length > 1) {
-            // 座標1 (1本目の指)
-            var x1 = touches[0].pageX;
-            var y1 = touches[0].pageY;
+    //     // 2本以上の指の場合だけ処理
+    //     if (touches.length > 1) {
+    //         // 座標1 (1本目の指)
+    //         var x1 = touches[0].pageX;
+    //         var y1 = touches[0].pageY;
 
-            // 座標2 (2本目の指)
-            var x2 = touches[1].pageX;
-            var y2 = touches[1].pageY;
+    //         // 座標2 (2本目の指)
+    //         var x2 = touches[1].pageX;
+    //         var y2 = touches[1].pageY;
 
-            // 2点間の距離
-            return Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2));
-        }
-        return 0;
-    }
+    //         // 2点間の距離
+    //         return Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2));
+    //     }
+    //     return 0;
+    // }
 
     // touchmove
     // document.ontouchmove = function (event) {
