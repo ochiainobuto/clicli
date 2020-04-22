@@ -9,19 +9,50 @@
 </head>
 
 <body>
-    <canvas align="center" id="canvas1" width="380" height="570"></canvas>
-    <canvas align="center" id="canvas2" width="380" height="570"></canvas>
+    <div id="wrap">
+        <div id="top">
+            <canvas id="canvas1" class="canvas1_class_mobile" width="380" height="570"></canvas>
+            <canvas id="canvas2" class="canvas2_class_mobile" width="380" height="570"></canvas>
+        </div>
+        <div id="top">
+            <div id="result" align="left">タッチセンサー</div>
+        </div>
+    </div>
 </body>
 
 </html>
 <style>
-    canvas#canvas1 {
+    /* canvas#canvas1 {
         display: block;
         position: absolute;
         top: 0;
         left: 0;
         width: 100%;
-        height: 100%;
+        height: auto;
+        text-align: center;
+    } */
+
+    canvas.canvas1_class_mobile {
+        display: block;
+        position: absolute;
+        width: 100%;
+        height: auto;
+        text-align: center;
+        margin: 0 auto;
+    }
+
+    canvas.canvas1_class_pc {
+        width: 375;
+        height: 812;
+
+        margin: auto;
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        text-align: center;
+
     }
 
     body,
@@ -49,6 +80,13 @@
         event.preventDefault();
     });
 
+    var canvas = document.getElementById("canvas1");
+    if (window.innerWidth < 375) {
+        canvas.className = "canvas1_class_mobile";
+    } else {
+        canvas.className = "canvas1_class_pc";
+    }
+
     var canvas = document.getElementById("canvas1"); // 実際に描画が行われる Canvas要素
     var stage = new createjs.Stage(canvas); // Stage クラスのインスタンスを作成する
 
@@ -60,9 +98,6 @@
     circle.y = canvas.height * 0.2;
     circle.scaleX = 3;
 
-    //stage.addChild(text, circle);
-    //stage.update();
-
     // 画像の先読み処理
     var baseimg = new Image();
     baseimg.src = "bg.jpg";
@@ -73,7 +108,6 @@
         basemap.scaleX = 1.0 // x方向の拡大率変更
         basemap.scaleY = 1.0 // y方向の拡大率変更
         stage.addChild(basemap);
-        //stage.update();
     };
 
     // 画像の先読み処理
@@ -87,30 +121,33 @@
         bitmap.scaleY = 1.0 // y方向の拡大率変更
         stage.addChild(bitmap, text, circle);
         stage.update();
+        stretch();
     };
 
-    createjs.Ticker.framerate = 40
-    createjs.Ticker.addEventListener("tick", function () {
-        if (bitmap.scaleX > 0.3) {
-            bitmap.scaleX = bitmap.scaleX - (bitmap.scaleX - 0.3) * 0.02;
-        }
+    function stretch() {
+        createjs.Ticker.framerate = 40
+        createjs.Ticker.addEventListener("tick", function () {
+            if (bitmap.scaleX > 0.3) {
+                bitmap.scaleX = bitmap.scaleX - (bitmap.scaleX - 0.3) * 0.02;
+            }
 
-        bitmap.regX = bitmap.image.width / 2;
-        bitmap.regY = bitmap.image.height / 2;
-        bitmap.x = canvas.width * 0.5;
-        bitmap.y = canvas.height * 0.5;
+            bitmap.regX = bitmap.image.width / 2;
+            bitmap.regY = bitmap.image.height / 2;
+            bitmap.x = canvas.width * 0.5;
+            bitmap.y = canvas.height * 0.5;
 
-        // if (bitmap.scaleX < 2) {
-        //     bitmap.scaleX = bitmap.scaleX + (2 - bitmap.scaleX) * 0.1;
-        // }
+            // if (bitmap.scaleX < 2) {
+            //     bitmap.scaleX = bitmap.scaleX + (2 - bitmap.scaleX) * 0.1;
+            // }
 
-        if (circle.scaleX > 1) {
-            circle.scaleX = circle.scaleX - (circle.scaleX - 1) * 0.1;
-        }
+            if (circle.scaleX > 1) {
+                circle.scaleX = circle.scaleX - (circle.scaleX - 1) * 0.1;
+            }
 
-        stage.update();
-        return;
-    });
+            stage.update();
+            return;
+        })
+    }
 
 
     /* --------
@@ -157,13 +194,5 @@
     document.documentElement.addEventListener('touchstart', function (e) {
         if (e.touches.length >= 2) { e.preventDefault(); }
     }, { passive: false });
-    /* ダブルタップによる拡大を禁止 */
-    // var t = 0;
-    // document.documentElement.addEventListener('touchend', function (e) {
-    //     var now = new Date().getTime();
-    //     if ((now - t) < 350) {
-    //         e.preventDefault();
-    //     }
-    //     t = now;
-    // }, false);
+
 </script>
