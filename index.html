@@ -185,11 +185,29 @@
     }
 
     window.onload = function () {
-        document.getElementById("canvas1").ontouchmove = function (e) {
-            document.getElementById("result").innerHTML = getDistance(e);
+        document.getElementById("canvas1").ontouchmove = function (event) {
+            if (baseDistance) {
+                // 変化後の距離
+                var movedDistance = getDistance(event);
+            } else {
+                // 基本の距離
+                baseDistance = getDistance(event);
+            }
+            document.getElementById("result").innerHTML = movedDistance / baseDistance;
         }
         document.ontouchmove = function () { event.preventDefault(); }
     }
+
+    element.ontouchmove = function (event) {
+        if (baseDistance) {
+            // 変化後の距離
+            var movedDistance = getDistance(event);
+        } else {
+            // 基本の距離
+            baseDistance = getDistance(event);
+        }
+    }
+
 
     // /* ピッチインピッチアウトによる拡大縮小を禁止 */
     document.documentElement.addEventListener('touchstart', function (e) {
