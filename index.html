@@ -193,6 +193,9 @@
                 // 基本の距離
                 baseDistance = getDistance(event);
             }
+            if (movedDistance / baseDistance > 0) {
+                bitmap.scaleX += 0.08;
+            }
             document.getElementById("result").innerHTML = movedDistance / baseDistance;
         }
         document.ontouchmove = function () { event.preventDefault(); }
