@@ -184,15 +184,15 @@
         return 0;
     }
 
-    // touchmove
-    // document.ontouchmove = function (event) {
-    //     // 操作開始時の距離
-    //     baseDistance = getDistance(event);
-    // }
-
     /* ピッチインピッチアウトによる拡大縮小を禁止 */
-    document.documentElement.addEventListener('touchstart', function (e) {
-        if (e.touches.length >= 2) { e.preventDefault(); }
-    }, { passive: false });
+
+    // bitmap.documentElement.addEventListener('touchstart', function (e) {
+    //     if (e.touches.length >= 2) { e.preventDefault(); }
+    // }, { passive: false });
+
+    // /* ピッチインピッチアウトによる拡大縮小を禁止 */
+    // document.documentElement.addEventListener('touchstart', function (e) {
+    //     if (e.touches.length >= 2) { e.preventDefault(); }
+    // }, { passive: false });
 
 </script>
