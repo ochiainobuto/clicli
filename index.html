@@ -161,9 +161,8 @@
         circle.scaleX += 0.5;
         bitmap.scaleX += 0.08;
 
-        if (window.navigator.vibrate) {
-            window.navigator.vibrate([200, 200, 200, 200, 200]);
-        }
+        var duration = 200; // 振動時間
+        navigator.vibrate(duration);
     });
 
     //ここからストレッチ/////////////////////////////////////
@@ -211,18 +210,6 @@
         document.ontouchmove = function () { event.preventDefault(); }
     }
 
-    //ピンチ時に値を更新
-    /* --------
-    element.ontouchmove = function (event) {
-        if (baseDistance) {
-            // 変化後の距離
-            var movedDistance = getDistance(event);
-        } else {
-            // 基本の距離
-            baseDistance = getDistance(event);
-        }
-    }
-    ----------- */
 
     // /* ピッチインピッチアウトによる拡大縮小を禁止 */
     document.documentElement.addEventListener('touchstart', function (e) {
