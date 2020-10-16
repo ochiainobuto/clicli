@@ -92,13 +92,14 @@
 
     var text = new createjs.Text("Let's Click!11", "20px Arial", "#ff7700"); // Text クラスのインスタンスを作成する
 
+    //クリトリスまる
     var circle = new createjs.Shape();
     circle.graphics.beginFill("red").drawCircle(0, 0, 20);
     circle.x = canvas.width * 0.5;
     circle.y = canvas.height * 0.2;
     circle.scaleX = 3;
 
-    // 画像の先読み処理
+    // 下の画像の先読み処理
     var baseimg = new Image();
     baseimg.src = "bg.jpg";
     // 画像の読み込み完了後に Bitmap のインスタンスを作成する
@@ -110,7 +111,7 @@
         stage.addChild(basemap);
     };
 
-    // 画像の先読み処理
+    // 上の画像の先読み処理
     var img = new Image();
     img.src = "fr1.png";
     // 画像の読み込み完了後に Bitmap のインスタンスを作成する
@@ -124,6 +125,7 @@
         stretch();
     };
 
+    //徐々に元の大きさに小さくなる
     function stretch() {
         createjs.Ticker.framerate = 40
         createjs.Ticker.addEventListener("tick", function () {
@@ -153,11 +155,18 @@
     /* --------
     MouseEvent(https://www.createjs.com/docs/easeljs/classes/MouseEvent.html)
     ----------- */
+
+    //クリをクリックすると、ちょっと大きくなる
     circle.addEventListener('click', function () {
         circle.scaleX += 0.5;
         bitmap.scaleX += 0.08;
-    });
 
+        if (window.navigator.vibrate) {
+            window.navigator.vibrate([200, 200, 200, 200, 200]);
+
+        });
+
+    //ここからストレッチ/////////////////////////////////////
     // 基本の距離
     var baseDistance = 0;
 
@@ -184,6 +193,7 @@
         return 0;
     }
 
+    // 値を監視して、常にストレッチを更新する
     window.onload = function () {
         document.getElementById("canvas1").ontouchmove = function (event) {
             if (baseDistance) {
@@ -201,6 +211,7 @@
         document.ontouchmove = function () { event.preventDefault(); }
     }
 
+    //ピンチ時に値を更新
     element.ontouchmove = function (event) {
         if (baseDistance) {
             // 変化後の距離
