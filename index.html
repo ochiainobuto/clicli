@@ -207,6 +207,7 @@
             }
             document.getElementById("result").innerHTML = movedDistance / baseDistance;
         }
+        //フォームが持つデフォルトの動作をキャンセルするメソッドです。
         document.ontouchmove = function () { event.preventDefault(); }
     }
 
