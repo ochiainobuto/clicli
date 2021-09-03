@@ -258,7 +258,7 @@
             }
         }
 
-        document.getElementById("canvas1").onmousemove = function (event) {
+        document.getElementById("canvas1").ontouchmove = function (event) {
             console.log("move");
             xDist = touches[0].pageX - x0;
             yDist = touches[0].pageY - y0;
