@@ -95,7 +95,7 @@
 
     //クリトリスまる
     var circle = new createjs.Shape();
-    circle.graphics.beginFill("red").drawCircle(0, 0, 120);
+    circle.graphics.beginFill("red").drawCircle(0, 0, 30);
     circle.x = canvas.width * 0.5;
     circle.y = canvas.height * 0.2;
     circle.scaleX = 3;
@@ -159,8 +159,9 @@
     MouseEvent(https://www.createjs.com/docs/easeljs/classes/MouseEvent.html)
     ----------- */
 
+    var dragging = false;
     circle.addEventListener("mousedown", handleDown);
-    circle.addEventListener("pressmove", handleMove);
+    // circle.addEventListener("pressmove", handleMove);
     circle.addEventListener("pressup", handleUp);
 
     function handleDown(event) {
@@ -174,33 +175,55 @@
         navigator.vibrate(duration);
 
         console.log('Click');
+        dragging = true;
     }
 
-    function handleMove(event) {
-        if (bitmap.scaleX < 1.1) {
-            bitmap.scaleX = bitmap.scaleX + bitmap.scaleX * 0.03;
-        }
+    // function handleMove(event) {
+    //     if (bitmap.scaleX < 1.1) {
+    //         bitmap.scaleX = bitmap.scaleX + bitmap.scaleX * 0.03;
+    //     }
 
-        if (circle.scaleX < 1.1) {
-            circle.scaleX = circle.scaleX + circle.scaleX * 0.03;
-        }
+    //     if (circle.scaleX < 1.1) {
+    //         circle.scaleX = circle.scaleX + circle.scaleX * 0.03;
+    //     }
 
-        count += 1;
-        text.text = "Drag!" + count;
-        console.log(count);
-        var duration = 200; // 振動時間
-        navigator.vibrate(duration);
+    //     count += 1;
+    //     text.text = "Drag!" + count;
+    //     console.log(count);
+    //     var duration = 200; // 振動時間
+    //     navigator.vibrate(duration);
 
-        console.log('Dragging');
-    }
+    //     console.log('Dragging');
+    // }
 
     function handleUp(event) {
         console.log('Up');
+        dragging = false
     }
 
 
+    document.body.addEventListener("mousemove", mmove, false);
+    document.body.addEventListener("touchmove", mmove, false);
+    //マウスカーソルが動いたときに発火
+    function mmove(e) {
+        if (dragging == true) {
+            if (bitmap.scaleX < 1.1) {
+                bitmap.scaleX = bitmap.scaleX + bitmap.scaleX * 0.03;
+            }
 
+            if (circle.scaleX < 1.1) {
+                circle.scaleX = circle.scaleX + circle.scaleX * 0.03;
+            }
 
+            count += 1;
+            text.text = "Drag!" + count;
+            console.log(count);
+            var duration = 200; // 振動時間
+            navigator.vibrate(duration);
+
+            console.log('Dragging');
+        }
+    }
 
 
     //ここからストレッチ/////////////////////////////////////
