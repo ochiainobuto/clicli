@@ -215,7 +215,6 @@
         }
     }
 
-
     //ここからストレッチ/////////////////////////////////////
     // 基本の距離
     var baseDistance = 0;
@@ -239,13 +238,41 @@
             // 2点間の距離
             return Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2));
         }
-
         return 0;
     }
 
+    var xDist = 0;
+    var yDist = 0;
+
     // 値を監視して、常にストレッチを更新する
     window.onload = function () {
-        document.getElementById("canvas1").ontouchmove = function (event) {
+
+        document.getElementById("canvas1").onmousedown = function (event) {
+            if (event.changedTouches) {
+                var x0 = event.changedTouches[0].pageX;
+                var y0 = event.changedTouches[0].pageY;
+            }
+            else {
+                var x0 = event.pageX;
+                var y0 = event.pageY;
+            }
+        }
+
+        document.getElementById("canvas1").onmousemove = function (event) {
+            console.log("move");
+            xDist = touches[0].pageX - x0;
+            yDist = touches[0].pageY - y0;
+            if (event.changedTouches) {
+                x0 = event.changedTouches[0].pageX;
+                y0 = event.changedTouches[0].pageY;
+            }
+            else {
+                x0 = event.pageX;
+                y0 = event.pageY;
+            }
+
+            console.log(xDist);
+
             if (baseDistance) {
                 // 変化後の距離
                 var movedDistance = getDistance(event);
@@ -259,6 +286,12 @@
             //テキストを入れ替えます。
             document.getElementById("result").innerHTML = movedDistance / baseDistance;
         }
+
+        document.getElementById("canvas1").onmouseup = function (event) {
+            xDist = 0;
+            yDist = 0;
+        }
+
         //フォームが持つデフォルトの動作をキャンセルするメソッドです。
         document.ontouchmove = function () { event.preventDefault(); }
     }
