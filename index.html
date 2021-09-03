@@ -247,22 +247,9 @@
     window.onload = function () {
         var xDist = 0;
         var yDist = 0;
-
+        var x0 = 0;
+        var y0 = 0;
         document.getElementById("canvas1").ontouchstart = function (event) {
-            if (event.changedTouches) {
-                var x0 = event.changedTouches[0].pageX;
-                var y0 = event.changedTouches[0].pageY;
-            }
-            else {
-                var x0 = event.pageX;
-                var y0 = event.pageY;
-            }
-        }
-
-        document.getElementById("canvas1").ontouchmove = function (event) {
-
-            xDist = touches[0].pageX - x0;
-            yDist = touches[0].pageY - y0;
             if (event.changedTouches) {
                 x0 = event.changedTouches[0].pageX;
                 y0 = event.changedTouches[0].pageY;
@@ -271,6 +258,23 @@
                 x0 = event.pageX;
                 y0 = event.pageY;
             }
+        }
+
+        document.getElementById("canvas1").ontouchmove = function (event) {
+
+            if (event.changedTouches) {
+                xDist = touches[0].pageX - x0;
+                yDist = touches[0].pageY - y0;
+                x0 = event.changedTouches[0].pageX;
+                y0 = event.changedTouches[0].pageY;
+            }
+            else {
+                xDist = event.pageX - x0;
+                yDist = event.pageY - y0;
+                x0 = event.pageX;
+                y0 = event.pageY;
+            }
+            console.log(xDist);
 
             if (baseDistance) {
                 // 変化後の距離
