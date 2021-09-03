@@ -247,7 +247,7 @@
     // 値を監視して、常にストレッチを更新する
     window.onload = function () {
 
-        document.getElementById("canvas1").onmousedown = function (event) {
+        document.getElementById("canvas1").ontouchstart = function (event) {
             if (event.changedTouches) {
                 var x0 = event.changedTouches[0].pageX;
                 var y0 = event.changedTouches[0].pageY;
@@ -270,8 +270,6 @@
                 x0 = event.pageX;
                 y0 = event.pageY;
             }
-
-            console.log(xDist);
 
             if (baseDistance) {
                 // 変化後の距離
