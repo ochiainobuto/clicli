@@ -81,17 +81,6 @@
     var stage = new createjs.Stage(canvas); // Stage クラスのインスタンスを作成する
     var text = new createjs.Text("Let's Click!" + count, "20px Arial", "#ff7700"); // Text クラスのインスタンスを作成する
 
-    //Title
-    var titleimg = new Image();
-    titleimg.src = "clicli_title.png";
-    // 画像の読み込み完了後に Bitmap のインスタンスを作成する
-    titleimg.onload = function () {
-        titlemap = new createjs.Bitmap("clicli_title.png");
-        titlemap.x = canvas.width * 0.67;
-        titlemap.y = canvas.height * 0.01;
-        titlemap.scaleX = 0.4 // x方向の拡大率変更
-        titlemap.scaleY = 0.4 // y方向の拡大率変更
-    };
 
     //クリトリスまる
     var circle = new createjs.Shape();
@@ -121,7 +110,7 @@
         //bitmap.y = 100;
         bitmap.scaleX = 1.0 // x方向の拡大率変更
         bitmap.scaleY = 1.0 // y方向の拡大率変更
-        stage.addChild(bitmap, text, circle, titlemap);
+        stage.addChild(bitmap, text, circle);
         stage.update();
         stretch();
     };
