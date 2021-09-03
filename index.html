@@ -259,17 +259,17 @@
         }
 
         document.getElementById("canvas1").ontouchmove = function (event) {
-            // console.log("move");
-            // xDist = touches[0].pageX - x0;
-            // yDist = touches[0].pageY - y0;
-            // if (event.changedTouches) {
-            //     x0 = event.changedTouches[0].pageX;
-            //     y0 = event.changedTouches[0].pageY;
-            // }
-            // else {
-            //     x0 = event.pageX;
-            //     y0 = event.pageY;
-            // }
+
+            xDist = touches[0].pageX - x0;
+            yDist = touches[0].pageY - y0;
+            if (event.changedTouches) {
+                x0 = event.changedTouches[0].pageX;
+                y0 = event.changedTouches[0].pageY;
+            }
+            else {
+                x0 = event.pageX;
+                y0 = event.pageY;
+            }
 
             if (baseDistance) {
                 // 変化後の距離
