@@ -191,8 +191,9 @@
     }
 
 
-    document.body.addEventListener("mousemove", mmove, false);
-    document.body.addEventListener("touchmove", mmove, false);
+    circle.addEventListener("pressmove", mmove, false);
+    //circle.addEventListener("touchmove", mmove, false);
+
     //マウスカーソルが動いたときに発火
     function mmove(e) {
         if (dragging == true) {
