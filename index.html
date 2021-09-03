@@ -241,11 +241,12 @@
         return 0;
     }
 
-    var xDist = 0;
-    var yDist = 0;
+
 
     // 値を監視して、常にストレッチを更新する
     window.onload = function () {
+        var xDist = 0;
+        var yDist = 0;
 
         document.getElementById("canvas1").ontouchstart = function (event) {
             if (event.changedTouches) {
