@@ -262,19 +262,19 @@
 
         document.getElementById("canvas1").ontouchmove = function (event) {
 
-            if (event.changedTouches) {
-                xDist = touches[0].pageX - x0;
-                yDist = touches[0].pageY - y0;
-                x0 = event.changedTouches[0].pageX;
-                y0 = event.changedTouches[0].pageY;
-            }
-            else {
-                xDist = event.pageX - x0;
-                yDist = event.pageY - y0;
-                x0 = event.pageX;
-                y0 = event.pageY;
-            }
-            console.log(xDist);
+            // if (event.changedTouches) {
+            //     xDist = touches[0].pageX - x0;
+            //     yDist = touches[0].pageY - y0;
+            //     x0 = event.changedTouches[0].pageX;
+            //     y0 = event.changedTouches[0].pageY;
+            // }
+            // else {
+            //     xDist = event.pageX - x0;
+            //     yDist = event.pageY - y0;
+            //     x0 = event.pageX;
+            //     y0 = event.pageY;
+            // }
+            // console.log(xDist);
 
             if (baseDistance) {
                 // 変化後の距離
