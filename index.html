@@ -247,16 +247,16 @@
     // 値を監視して、常にストレッチを更新する
     window.onload = function () {
 
-        // document.getElementById("canvas1").ontouchstart = function (event) {
-        //     if (event.changedTouches) {
-        //         var x0 = event.changedTouches[0].pageX;
-        //         var y0 = event.changedTouches[0].pageY;
-        //     }
-        //     else {
-        //         var x0 = event.pageX;
-        //         var y0 = event.pageY;
-        //     }
-        // }
+        document.getElementById("canvas1").ontouchstart = function (event) {
+            if (event.changedTouches) {
+                var x0 = event.changedTouches[0].pageX;
+                var y0 = event.changedTouches[0].pageY;
+            }
+            else {
+                var x0 = event.pageX;
+                var y0 = event.pageY;
+            }
+        }
 
         document.getElementById("canvas1").ontouchmove = function (event) {
             // console.log("move");
