@@ -10,68 +10,56 @@
 
 <body>
     <div id="wrap">
+        <div id="title" align="center">CliCli</div>
         <div id="top">
-            <canvas id="canvas1" class="canvas1_class_mobile" width="380" height="570"></canvas>
-            <canvas id="canvas2" class="canvas2_class_mobile" width="380" height="570"></canvas>
+            <canvas id="canvas1" width="380" height="570"></canvas>
         </div>
         <div id="top">
-            <div id="result" align="left">タッチセンサー</div>
+            <div id="result" align="center">タッチセンサー</div>
+            <div id="result" align="center">
+                <img src="qr_code.png" alt="海の写真" title="空と海">
+            </div>
+        </div>
+        <div id="bottom">
+            <div id="qr" align="center">
+                <img src="qr_code.png" alt="海の写真" title="空と海">
+            </div>
         </div>
     </div>
 </body>
 
 </html>
 <style>
-    /* canvas#canvas1 {
-        display: block;
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: auto;
-        text-align: center;
-    } */
-
-    canvas.canvas1_class_mobile {
-        display: block;
-        position: absolute;
-        width: 100%;
-        height: auto;
-        text-align: center;
-        margin: 0 auto;
-    }
-
-    canvas.canvas1_class_pc {
-        width: 375;
-        height: 812;
-
-        margin: auto;
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        text-align: center;
-
-    }
-
-    body,
-    input,
-    textarea,
-    select {
-        /* 入力欄にフォーカスが当たっても拡大しない */
-        font-size: 17px;
-        position: fixed;
-        user-select: none;
-        -webkit-user-select: none;
-        -ms-user-select: none;
-        -moz-user-select: none;
-        -khtml-user-select: none;
-        -webkit-user-drag: none;
-        -khtml-user-drag: none;
-        width: 100%;
+    #title {
+        position: relative;
+        height: 30px;
         margin: 0;
-        padding: 0;
+    }
+
+    #top {
+        text-align: center;
+        margin: 0;
+    }
+
+    #result {
+        display: block;
+        top: 100;
+        left: 0;
+        width: 100%;
+        height: auto;
+        text-align: center;
+        margin: 0;
+    }
+
+    #qr {
+        display: block;
+        position: absolute;
+        top: 100;
+        left: 0;
+        width: 100%;
+        height: auto;
+        text-align: center;
+        margin: 0;
     }
 </style>
 
@@ -87,10 +75,23 @@
         canvas.className = "canvas1_class_pc";
     }
 
-    var canvas = document.getElementById("canvas1"); // 実際に描画が行われる Canvas要素
-    var stage = new createjs.Stage(canvas); // Stage クラスのインスタンスを作成する
+    var count = 0;
 
-    var text = new createjs.Text("Let's Click!11", "20px Arial", "#ff7700"); // Text クラスのインスタンスを作成する
+    //var canvas = document.getElementById("canvas1"); // 実際に描画が行われる Canvas要素
+    var stage = new createjs.Stage(canvas); // Stage クラスのインスタンスを作成する
+    var text = new createjs.Text("Let's Click!" + count, "20px Arial", "#ff7700"); // Text クラスのインスタンスを作成する
+
+    //Title
+    var titleimg = new Image();
+    titleimg.src = "clicli_title.png";
+    // 画像の読み込み完了後に Bitmap のインスタンスを作成する
+    titleimg.onload = function () {
+        titlemap = new createjs.Bitmap("clicli_title.png");
+        titlemap.x = canvas.width * 0.67;
+        titlemap.y = canvas.height * 0.01;
+        titlemap.scaleX = 0.4 // x方向の拡大率変更
+        titlemap.scaleY = 0.4 // y方向の拡大率変更
+    };
 
     //クリトリスまる
     var circle = new createjs.Shape();
@@ -120,10 +121,12 @@
         //bitmap.y = 100;
         bitmap.scaleX = 1.0 // x方向の拡大率変更
         bitmap.scaleY = 1.0 // y方向の拡大率変更
-        stage.addChild(bitmap, text, circle);
+        stage.addChild(bitmap, text, circle, titlemap);
         stage.update();
         stretch();
     };
+
+    console.log('こんにちは');
 
     //徐々に元の大きさに小さくなる
     function stretch() {
@@ -156,14 +159,49 @@
     MouseEvent(https://www.createjs.com/docs/easeljs/classes/MouseEvent.html)
     ----------- */
 
-    //クリをクリックすると、ちょっと大きくなる
-    circle.addEventListener('click', function () {
+    circle.addEventListener("mousedown", handleDown);
+    circle.addEventListener("pressmove", handleMove);
+    circle.addEventListener("pressup", handleUp);
+
+    function handleDown(event) {
         circle.scaleX += 0.5;
         bitmap.scaleX += 0.08;
 
+        count += 1;
+        text.text = "Click!" + count;
+        console.log(count);
         var duration = 200; // 振動時間
         navigator.vibrate(duration);
-    });
+
+        console.log('Click');
+    }
+
+    function handleMove(event) {
+        if (bitmap.scaleX < 1.1) {
+            bitmap.scaleX = bitmap.scaleX + bitmap.scaleX * 0.03;
+        }
+
+        if (circle.scaleX < 1.1) {
+            circle.scaleX = circle.scaleX + circle.scaleX * 0.03;
+        }
+
+        count += 1;
+        text.text = "Drag!" + count;
+        console.log(count);
+        var duration = 200; // 振動時間
+        navigator.vibrate(duration);
+
+        console.log('Dragging');
+    }
+
+    function handleUp(event) {
+        console.log('Up');
+    }
+
+
+
+
+
 
     //ここからストレッチ/////////////////////////////////////
     // 基本の距離
@@ -205,6 +243,7 @@
             if (movedDistance / baseDistance > 0) {
                 bitmap.scaleX += 0.04;
             }
+            //テキストを入れ替えます。
             document.getElementById("result").innerHTML = movedDistance / baseDistance;
         }
         //フォームが持つデフォルトの動作をキャンセルするメソッドです。
