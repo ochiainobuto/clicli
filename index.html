@@ -10,18 +10,13 @@
 
 <body>
     <div id="wrap">
-        <div id="title" align="center">CliCli</div>
         <div id="top">
             <canvas id="canvas1" width="380" height="570"></canvas>
         </div>
         <div id="top">
+            <canvas id="graph" width="380" height="100"></canvas>
             <div id="result" align="center">タッチセンサー</div>
             <div id="result" align="center">
-                <img src="qr_code.png" alt="海の写真" title="空と海">
-            </div>
-        </div>
-        <div id="bottom">
-            <div id="qr" align="center">
                 <img src="qr_code.png" alt="海の写真" title="空と海">
             </div>
         </div>
@@ -30,15 +25,17 @@
 
 </html>
 <style>
-    #title {
-        position: relative;
-        height: 30px;
-        margin: 0;
+
+    canvas {
+        vertical-align: bottom;
+        font-size:0px;
     }
 
     #top {
         text-align: center;
         margin: 0;
+        padding: 0;
+        vertical-align: bottom;
     }
 
     #result {
@@ -49,6 +46,7 @@
         height: auto;
         text-align: center;
         margin: 0;
+        padding: 0;
     }
 
     #qr {
@@ -60,6 +58,7 @@
         height: auto;
         text-align: center;
         margin: 0;
+        padding: 0;
     }
 </style>
 
@@ -67,13 +66,10 @@
     window.addEventListener('touchmove', function (event) {
         event.preventDefault();
     });
-
     var canvas = document.getElementById("canvas1");
-    if (window.innerWidth < 375) {
-        canvas.className = "canvas1_class_mobile";
-    } else {
-        canvas.className = "canvas1_class_pc";
-    }
+    var _canvas = document.getElementById("graph");
+    var ctx = canvas.getContext('2d');
+    var _ctx = _canvas.getContext('2d');
 
     var count = 0;
 
@@ -93,7 +89,7 @@
     var baseimg = new Image();
     baseimg.src = "bg.jpg";
     // 画像の読み込み完了後に Bitmap のインスタンスを作成する
-    baseimg.onload = function () {
+    baseimg.onload = function () {preX
         basemap = new createjs.Bitmap("bg.jpg");
         //basemap.y = 100;
         basemap.scaleX = 1.0 // x方向の拡大率変更
@@ -115,24 +111,18 @@
         stretch();
     };
 
-    console.log('こんにちは');
-
     //徐々に元の大きさに小さくなる
     function stretch() {
         createjs.Ticker.framerate = 40
         createjs.Ticker.addEventListener("tick", function () {
             if (bitmap.scaleX > 0.3) {
-                bitmap.scaleX = bitmap.scaleX - (bitmap.scaleX - 0.3) * 0.02;
+                bitmap.scaleX = bitmap.scaleX - (bitmap.scaleX - 0.3) * 0.01;
             }
 
             bitmap.regX = bitmap.image.width / 2;
             bitmap.regY = bitmap.image.height / 2;
             bitmap.x = canvas.width * 0.5;
             bitmap.y = canvas.height * 0.5;
-
-            // if (bitmap.scaleX < 2) {
-            //     bitmap.scaleX = bitmap.scaleX + (2 - bitmap.scaleX) * 0.1;
-            // }
 
             if (circle.scaleX > 1) {
                 circle.scaleX = circle.scaleX - (circle.scaleX - 1) * 0.1;
@@ -167,57 +157,19 @@
         dragging = true;
     }
 
-    // function handleMove(event) {
-    //     if (bitmap.scaleX < 1.1) {
-    //         bitmap.scaleX = bitmap.scaleX + bitmap.scaleX * 0.03;
-    //     }
-
-    //     if (circle.scaleX < 1.1) {
-    //         circle.scaleX = circle.scaleX + circle.scaleX * 0.03;
-    //     }
-
-    //     count += 1;
-    //     text.text = "Drag!" + count;
-    //     console.log(count);
-    //     var duration = 200; // 振動時間
-    //     navigator.vibrate(duration);
-
-    //     console.log('Dragging');
-    // }
-
     function handleUp(event) {
         console.log('Up');
         dragging = false
     }
 
-
-    circle.addEventListener("pressmove", mmove, false);
-    //circle.addEventListener("touchmove", mmove, false);
-
-    //マウスカーソルが動いたときに発火
-    function mmove(e) {
-        if (dragging == true) {
-            if (bitmap.scaleX < 1.1) {
-                bitmap.scaleX = bitmap.scaleX + bitmap.scaleX * 0.03;
-            }
-
-            if (circle.scaleX < 1.1) {
-                circle.scaleX = circle.scaleX + circle.scaleX * 0.03;
-            }
-
-            count += 1;
-            text.text = "Drag!" + count;
-            console.log(count);
-            var duration = 200; // 振動時間
-            navigator.vibrate(duration);
-
-            console.log('Dragging');
-        }
-    }
-
     //ここからストレッチ/////////////////////////////////////
     // 基本の距離
     var baseDistance = 0;
+    var startTime = Date.now();
+    var preX = 0, preY = 0;
+    var arr = [];
+    var _preX = 0, _preY = 0;
+    var _arr = [];
 
     // 距離を測る関数
     function getDistance(event) {
@@ -249,7 +201,11 @@
         var yDist = 0;
         var x0 = 0;
         var y0 = 0;
+        var dragging;
+
+        //document.getElementById("canvas1").onmousedown = function (event) {
         document.getElementById("canvas1").ontouchstart = function (event) {
+            console.log('Down');
             if (event.changedTouches) {
                 x0 = event.changedTouches[0].pageX;
                 y0 = event.changedTouches[0].pageY;
@@ -258,48 +214,160 @@
                 x0 = event.pageX;
                 y0 = event.pageY;
             }
+            dragging = true;
         }
 
+        //document.getElementById("canvas1").onmousemove = function (event) {
         document.getElementById("canvas1").ontouchmove = function (event) {
-
+            //console.log('Drag');
             if (event.changedTouches) {
                 xDist = event.changedTouches[0].pageX - x0;
                 yDist = event.changedTouches[0].pageY - y0;
                 x0 = event.changedTouches[0].pageX;
                 y0 = event.changedTouches[0].pageY;
+                arr.push( {"t": Date.now() - startTime, "x": x0, "y": y0}); 
+                _arr.push( {"t": Date.now() - startTime, "x": xDist, "y": yDist}); 
             }
             else {
-                xDist = event.pageX - x0;
-                yDist = event.pageY - y0;
-                x0 = event.pageX;
-                y0 = event.pageY;
-            }
-            // console.log(xDist);
+                console.log(dragging);
+                if(dragging == true)
+                {
+                    xDist = event.pageX - x0;
+                    yDist = event.pageY - y0;
+                    x0 = event.pageX;
+                    y0 = event.pageY;
+                    arr.push( {"t": Date.now() - startTime, "x": x0, "y": y0}); 
+                    _arr.push( {"t": Date.now() - startTime, "x": xDist, "y": yDist}); 
+                    
+                    //Drag中に大きくする
+                    if (bitmap.scaleX < 1.1) {
+                        bitmap.scaleX = bitmap.scaleX + bitmap.scaleX * 0.0105;
+                    }
+                    bitmap.regX = bitmap.image.width / 2;
+                    bitmap.regY = bitmap.image.height / 2;
+                    bitmap.x = canvas.width * 0.5;
+                    bitmap.y = canvas.height * 0.5;
 
-            if (baseDistance) {
-                // 変化後の距離
-                var movedDistance = getDistance(event);
-            } else {
-                // 基本の距離
-                baseDistance = getDistance(event);
+                    if (circle.scaleX < 1.1) {
+                        circle.scaleX = circle.scaleX + circle.scaleX * 0.12;
+                    }
+                    stage.update();
+                }
             }
-            if (movedDistance / baseDistance > 0) {
-                bitmap.scaleX += 0.04;
+
+            //console.log(xDist);
+
+            /// ストレッチ
+            if (event.changedTouches) {
+                if (baseDistance) {
+                    // 変化後の距離
+                    var movedDistance = getDistance(event);
+                } else {
+                    // 基本の距離
+                    baseDistance = getDistance(event);
+                }
+                if (movedDistance / baseDistance > 0) {
+                    bitmap.scaleX += 0.04;
+                }
             }
+
             //テキストを入れ替えます。
             //document.getElementById("result").innerHTML = movedDistance / baseDistance;
             document.getElementById("result").innerHTML = xDist;
         }
 
-        document.getElementById("canvas1").onmouseup = function (event) {
+        //document.getElementById("canvas1").onmouseup = function (event) {
+        document.getElementById("canvas1").touchend = function (event) {
+            console.log('Up');
             xDist = 0;
             yDist = 0;
+            dragging = false;
         }
 
         //フォームが持つデフォルトの動作をキャンセルするメソッドです。
         document.ontouchmove = function () { event.preventDefault(); }
     }
 
+    // 加速度データをグラフ表示する displayData
+    function displayData() {
+
+        if ( ! canvas || ! canvas.getContext ) { return false; }
+        _ctx.fillStyle = "rgb(220, 220, 220)";
+        _ctx.fillRect( 0, 0, canvas.clientWidth, canvas.clientHeight );
+        _ctx.lineWidth = 1 ;
+
+        // 最新から 300px 分のデータを取りだす。
+        var varr = [];
+        if ( arr.length > canvas.clientWidth){
+            varr = arr.slice(-canvas.clientWidth,-1);
+        }else{
+            varr = arr;
+        }
+        
+        //軌跡
+        for ( idx in varr ){
+            if ( idx > canvas.clientWidth ) break;
+            var dat = varr[idx];
+
+            if(idx == 0){
+                preX = dat.x - 118;
+                preY = dat.y - 5;
+            }
+
+            // 跡を書く
+            ctx.strokeStyle = "green";
+            ctx.beginPath();
+            ctx.moveTo(dat.x -118,dat.y - 5);
+            ctx.lineTo(preX,preY);
+            ctx.stroke();
+
+            preX = dat.x - 118;
+            preY = dat.y - 5;
+        }
+
+        // 加速度
+        var _varr = [];
+        if ( _arr.length > canvas.clientWidth){
+            _varr = _arr.slice(-canvas.clientWidth,-1);
+        }else{
+            _varr = _arr;
+        }
+
+        for ( idx in _varr ){
+            if ( idx > _canvas.clientWidth ) break;
+            var dat = _varr[idx];
+
+            // X 軸加速度を赤の線で表示する
+            var dy1 = _canvas.clientHeight/2 + dat.x * 5.0;
+            var dx = idx;
+            _ctx.strokeStyle = "red";
+            _ctx.beginPath();
+            _ctx.moveTo(dx,dy1);
+            _ctx.lineTo(dx-1,_preX);
+            _ctx.stroke();
+
+            // Y 軸加速度を青の線で表示する
+            var dy2 = _canvas.clientHeight/2 + dat.y * 5.0;
+            _ctx.strokeStyle = "blue";
+            _ctx.beginPath();
+            _ctx.moveTo(dx,dy2);
+            _ctx.lineTo(dx-1,_preY);
+            _ctx.stroke();
+            
+            // 次のデータを表示するときに前のデータから線を描く用
+            _preX = dy1;
+            _preY = dy2;
+        }
+
+
+    }
+
+    // ブラウザのレンダリングのタイミングにあわせて表示を更新
+    (function loop(){
+        displayData();
+        // update();
+        window.requestAnimationFrame(loop);
+    }());
 
     // /* ピッチインピッチアウトによる拡大縮小を禁止 */
     document.documentElement.addEventListener('touchstart', function (e) {
