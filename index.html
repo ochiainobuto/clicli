@@ -193,7 +193,20 @@
         return 0;
     }
 
+    //Drag中に大きくする
+    function drag() {
+        if (bitmap.scaleX < 1.1) {
+            bitmap.scaleX = bitmap.scaleX + bitmap.scaleX * 0.0105;
+        }
+        bitmap.regX = bitmap.image.width / 2;
+        bitmap.regY = bitmap.image.height / 2;
+        bitmap.x = canvas.width * 0.5;
+        bitmap.y = canvas.height * 0.5;
 
+        if (circle.scaleX < 1.1) {
+            circle.scaleX = circle.scaleX + circle.scaleX * 0.12;
+        }
+    }
 
     // 値を監視して、常にストレッチを更新する
     window.onload = function () {
@@ -227,6 +240,7 @@
                 y0 = event.changedTouches[0].pageY;
                 arr.push( {"t": Date.now() - startTime, "x": x0, "y": y0}); 
                 _arr.push( {"t": Date.now() - startTime, "x": xDist, "y": yDist}); 
+                drag();
             }
             else {
                 console.log(dragging);
