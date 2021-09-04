@@ -317,12 +317,12 @@
             // 跡を書く
             ctx.strokeStyle = "green";
             ctx.beginPath();
-            ctx.moveTo(dat.x -118,dat.y - 5);
+            ctx.moveTo(dat.x,dat.y);
             ctx.lineTo(preX,preY);
             ctx.stroke();
 
-            preX = dat.x - 118;
-            preY = dat.y - 5;
+            preX = dat.x;
+            preY = dat.y;
         }
 
         // 加速度
