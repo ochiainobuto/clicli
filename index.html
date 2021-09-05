@@ -25,6 +25,9 @@
 
 </html>
 <style>
+    body {
+        background-color: black;
+        }
 
     canvas {
         vertical-align: bottom;
@@ -80,17 +83,18 @@
 
     //クリトリスまる
     var circle = new createjs.Shape();
-    circle.graphics.beginFill("red").drawCircle(0, 0, 30);
+    circle.graphics.beginFill("rgb(222, 60, 92)").drawCircle(0, 0, 14);
     circle.x = canvas.width * 0.5;
     circle.y = canvas.height * 0.2;
-    circle.scaleX = 3;
+    circle.scaleY = 1.6;
+    //circle.alpha = 0.5;
 
     // 下の画像の先読み処理
     var baseimg = new Image();
     baseimg.src = "bg.jpg";
     // 画像の読み込み完了後に Bitmap のインスタンスを作成する
     baseimg.onload = function () {preX
-        basemap = new createjs.Bitmap("bg.jpg");
+        basemap = new createjs.Bitmap("bg2.jpg");
         //basemap.y = 100;
         basemap.scaleX = 1.0 // x方向の拡大率変更
         basemap.scaleY = 1.0 // y方向の拡大率変更
@@ -102,11 +106,11 @@
     img.src = "fr1.png";
     // 画像の読み込み完了後に Bitmap のインスタンスを作成する
     img.onload = function () {
-        bitmap = new createjs.Bitmap("fr1.png");
+        bitmap = new createjs.Bitmap("fr2.png");
         //bitmap.y = 100;
         bitmap.scaleX = 1.0 // x方向の拡大率変更
         bitmap.scaleY = 1.0 // y方向の拡大率変更
-        stage.addChild(bitmap, text, circle);
+        stage.addChild(circle, bitmap, text);
         stage.update();
         stretch();
     };
@@ -125,7 +129,7 @@
             bitmap.y = canvas.height * 0.5;
 
             if (circle.scaleX > 1) {
-                circle.scaleX = circle.scaleX - (circle.scaleX - 1) * 0.1;
+                circle.scaleX = circle.scaleX - (circle.scaleX - 1) * 0.02;
             }
 
             stage.update();
@@ -144,14 +148,21 @@
     circle.addEventListener("pressup", handleUp);
 
     function handleDown(event) {
-        circle.scaleX += 0.5;
+        circle.scaleX += 0.03;
         bitmap.scaleX += 0.08;
 
         count += 1;
         text.text = "Click!" + count;
         console.log(count);
-        var duration = 200; // 振動時間
-        navigator.vibrate(duration);
+        if(window.navigator.vibrate){
+            window.navigator.vibrate([200,200,200,200,200]);
+          }else if(window.navigator.mozVibrate){
+            window.navigator.mozVibrate([200,200,200]);
+          }else if(window.navigator.webkitVibrate){
+            window.navigator.webkitVibrate([200]);
+          }else{
+            alert("sorry (T-T)");
+          } 
 
         console.log('Click');
         dragging = true;
@@ -204,7 +215,7 @@
         bitmap.y = canvas.height * 0.5;
 
         if (circle.scaleX < 1.1) {
-            circle.scaleX = circle.scaleX + circle.scaleX * 0.12;
+            circle.scaleX = circle.scaleX + circle.scaleX * 0.02;
         }
     }
 
@@ -254,17 +265,7 @@
                     _arr.push( {"t": Date.now() - startTime, "x": xDist, "y": yDist}); 
                     
                     //Drag中に大きくする
-                    if (bitmap.scaleX < 1.1) {
-                        bitmap.scaleX = bitmap.scaleX + bitmap.scaleX * 0.0105;
-                    }
-                    bitmap.regX = bitmap.image.width / 2;
-                    bitmap.regY = bitmap.image.height / 2;
-                    bitmap.x = canvas.width * 0.5;
-                    bitmap.y = canvas.height * 0.5;
-
-                    if (circle.scaleX < 1.1) {
-                        circle.scaleX = circle.scaleX + circle.scaleX * 0.12;
-                    }
+                    drag();
                     stage.update();
                 }
             }
@@ -306,7 +307,7 @@
     function displayData() {
 
         if ( ! canvas || ! canvas.getContext ) { return false; }
-        _ctx.fillStyle = "rgb(220, 220, 220)";
+        _ctx.fillStyle = "rgb(0, 0, 0)";
         _ctx.fillRect( 0, 0, canvas.clientWidth, canvas.clientHeight );
         _ctx.lineWidth = 1 ;
 
