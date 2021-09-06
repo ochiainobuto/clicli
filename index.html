@@ -10,6 +10,14 @@
 
 <body>
     <div id="wrap">
+        <div id="mask" class="hidden"></div>
+        <section id="modal" class="hidden">
+            <p>Please note that a very obscene voice will be played.<br>とても卑猥な音声が流れるので注意してください。</p>
+            <div id="close">
+            閉じる
+            </div>
+        </section>
+
         <div id="top">
             <canvas id="canvas1" width="380" height="570"></canvas>
         </div>
@@ -63,12 +71,99 @@
         margin: 0;
         padding: 0;
     }
+
+    #close {
+        cursor: pointer;
+        width: 200px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        text-align: center;
+        padding: 12px;
+        margin: 16px auto 0;
+        background: #4caf50;
+        color: white;
+        position: relative;
+        top: 30%;
+    }
+
+    #mask {
+        background: rgba(0, 0, 0, 0.4);
+        position: fixed;
+        top: 0;
+        bottom: 0;
+        right: 0;
+        left: 0;
+        z-index: 1;
+    }
+
+    #modal {
+        background: #fff;
+        color: #555;
+        width: 300px;
+        padding: 40px;
+        border-radius: 4px;
+        position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            -webkit-transform: translate(-50%, -50%);
+            -ms-transform: translate(-50%, -50%);
+        margin: 0 auto;
+        z-index: 2;
+    }
+
+    #modal p {
+        margin: 0 0 20px;
+    }
+
+    #mask.hidden {
+        display: none;
+    }
+
+    #modal.hidden {
+        display: none;
+    }
+
 </style>
 
 <script>
+    //Reset
     window.addEventListener('touchmove', function (event) {
         event.preventDefault();
     });
+    console.log('start');
+    // 処理の中身
+
+    /* -----------------------------------------------------------------
+    スタートの警告
+    -------------------------------------------------------------------- */
+
+    window.addEventListener("load", function() {
+        // 実行したい処理
+        modal.classList.remove('hidden');
+        mask.classList.remove('hidden');
+    });
+
+    const close = document.getElementById('close');
+    const modal = document.getElementById('modal');
+    const mask = document.getElementById('mask');
+
+
+    close.addEventListener('click', function () {
+        modal.classList.add('hidden');
+        mask.classList.add('hidden');
+        //voice();
+    });
+    mask.addEventListener('click', function () {
+        modal.classList.add('hidden');
+        mask.classList.add('hidden');
+        //voice();
+    });
+
+
+    /* -----------------------------------------------------------------
+    各種オブジェクトの作成
+    -------------------------------------------------------------------- */
     var canvas = document.getElementById("canvas1");
     var _canvas = document.getElementById("graph");
     var ctx = canvas.getContext('2d');
@@ -79,7 +174,6 @@
     //var canvas = document.getElementById("canvas1"); // 実際に描画が行われる Canvas要素
     var stage = new createjs.Stage(canvas); // Stage クラスのインスタンスを作成する
     var text = new createjs.Text("Let's Click!" + count, "20px Arial", "#ff7700"); // Text クラスのインスタンスを作成する
-
 
     //クリトリスまる
     var circle = new createjs.Shape();
@@ -104,7 +198,11 @@
     // 上の画像の先読み処理
     var img = new Image();
     img.src = "fr1.png";
-    // 画像の読み込み完了後に Bitmap のインスタンスを作成する
+
+    /* -----------------------------------------------------------------
+    createjsのモデルを配置　画像の読み込み完了後に Bitmap のインスタンスを作成する
+    -------------------------------------------------------------------- */
+    //var bitmap = new Image();
     img.onload = function () {
         bitmap = new createjs.Bitmap("fr2.png");
         //bitmap.y = 100;
@@ -114,8 +212,11 @@
         stage.update();
         stretch();
     };
+    /* -----------------------------------------------------------------    
+    //徐々に元の大きさに小さくなる　＆　Voice のきりかえ
+    -------------------------------------------------------------------- */
+    var voice1_volume;
 
-    //徐々に元の大きさに小さくなる
     function stretch() {
         createjs.Ticker.framerate = 40
         createjs.Ticker.addEventListener("tick", function () {
@@ -131,16 +232,28 @@
             if (circle.scaleX > 1) {
                 circle.scaleX = circle.scaleX - (circle.scaleX - 1) * 0.02;
             }
-
             stage.update();
+
+            /* -----------------------------------------------------------------
+            Voice のきりかえ
+            -------------------------------------------------------------------- */
+            document.getElementById("result").innerHTML = bitmap.scaleX;
+            document.getElementById("result").style.color = "red";
+
+            // voice1.volume = (Math.min(Math.max(0, bitmap.scaleX), 0.5) - 0.3)*0.5;
+            // voice2.volume = (Math.min(Math.max(0.5, bitmap.scaleX), 0.8) - 0.5)*0.33;
+            // voice3.volume = (Math.min(Math.max(0.8, bitmap.scaleX), 1.0) - 0.7)*0.5;
+            
             return;
         })
+
     }
 
 
-    /* --------
-    MouseEvent(https://www.createjs.com/docs/easeljs/classes/MouseEvent.html)
-    ----------- */
+    /* -----------------------------------------------------------------
+    MouseEvent
+    -------------------------------------------------------------------- */
+    var music = new Audio('./voice/neiki_01-01.wav');
 
     var dragging = false;
     circle.addEventListener("mousedown", handleDown);
@@ -166,6 +279,11 @@
 
         console.log('Click');
         dragging = true;
+        
+        console.log(music.ended);
+        music.play();  // 再生
+        console.log(music.ended);
+
     }
 
     function handleUp(event) {
@@ -173,7 +291,9 @@
         dragging = false
     }
 
-    //ここからストレッチ/////////////////////////////////////
+    /* -----------------------------------------------------------------
+    Stretch
+    -------------------------------------------------------------------- */
     // 基本の距離
     var baseDistance = 0;
     var startTime = Date.now();
@@ -218,17 +338,81 @@
             circle.scaleX = circle.scaleX + circle.scaleX * 0.02;
         }
     }
+    
+    /* -----------------------------------------------------------------
+    Audio 読み込み
+    -------------------------------------------------------------------- */
 
-    // 値を監視して、常にストレッチを更新する
+    // var voice1 = new Audio(); // audioの作成
+    // voice1.src = './voice/neiki_01.wav'; // 音声ファイルの指定
+    // voice1.load(); // audioの読み込み
+
+    // var voice2 = new Audio(); // audioの作成
+    // voice2.src = './voice/kakokyu_01.wav'; // 音声ファイルの指定
+    // voice2.load(); // audioの読み込み
+
+    // var voice3 = new Audio(); // audioの作成
+    // voice3.src = './voice/kakokyu_03.wav'; // 音声ファイルの指定
+    // voice3.load(); // audioの読み込み
+
+    // function voice(){
+    //     voice1.play();  // 再生
+    //     voice1.addEventListener("ended", function () {
+    //         voice1.currentTime = 0;
+    //         setTimeout(function(){
+    //         voice1.play();
+    //         },1000);
+    //     })
+
+    //     voice2.play();  // 再生
+    //     voice2.addEventListener("ended", function () {
+    //         voice2.currentTime = 0;
+    //         setTimeout(function(){
+    //         voice2.play();
+    //         },1000);
+    //     })
+
+    //     voice2.play();  // 再生
+    //     voice2.addEventListener("ended", function () {
+    //         voice2.currentTime = 0;
+    //         setTimeout(function(){
+    //         voice2.play();
+    //         },1000);
+    //     })
+    // }
+
+
+    var audio = document.createElement('audio');
+    document.body.appendChild(audio);
+    var playlist = [
+    './voice/neiki_01-01.wav',
+    './voice/neiki_01-02.wav',
+    './voice/neiki_01-03.wav',
+    './voice/neiki_01-04.wav',
+    './voice/neiki_01-05.wav',
+    './voice/neiki_01-06.wav',
+    './voice/neiki_01-07.wav',
+    './voice/neiki_01-08.wav',
+    './voice/neiki_01-09.wav',
+    './voice/neiki_01-10.wav',
+    './voice/neiki_01-11.wav',
+    './voice/neiki_01-12.wav'
+    ]
+
+
+    /* -----------------------------------------------------------------
+    Update 値を監視して、常にストレッチを更新する 
+    -------------------------------------------------------------------- */
+
     window.onload = function () {
         var xDist = 0;
         var yDist = 0;
         var x0 = 0;
         var y0 = 0;
         var dragging;
-
-        //document.getElementById("canvas1").onmousedown = function (event) {
-        document.getElementById("canvas1").ontouchstart = function (event) {
+        // Click ON
+        document.getElementById("canvas1").onmousedown = function (event) {
+        //document.getElementById("canvas1").ontouchstart = function (event) {
             console.log('Down');
             if (event.changedTouches) {
                 x0 = event.changedTouches[0].pageX;
@@ -239,10 +423,15 @@
                 y0 = event.pageY;
             }
             dragging = true;
+            
+            var randnum = Math.floor( Math.random() * playlist.length);
+            audio.src = playlist[randnum];
+            console.log(audio.src);
+            audio.play();  // 再生
         }
-
-        //document.getElementById("canvas1").onmousemove = function (event) {
-        document.getElementById("canvas1").ontouchmove = function (event) {
+        //Drag Over
+        document.getElementById("canvas1").onmousemove = function (event) {
+        //document.getElementById("canvas1").ontouchmove = function (event) {
             //console.log('Drag');
             if (event.changedTouches) {
                 xDist = event.changedTouches[0].pageX - x0;
@@ -267,10 +456,17 @@
                     //Drag中に大きくする
                     drag();
                     stage.update();
+
+                    ///// Sound Play
+                
+                    if(audio.ended == true){
+                        audio.currentTime = 0;
+                        audio.src = playlist[Math.floor( Math.random() * playlist.length)];
+                        console.log(audio.src);
+                        audio.play();
+                    }
                 }
             }
-
-            //console.log(xDist);
 
             /// ストレッチ
             if (event.changedTouches) {
@@ -288,22 +484,34 @@
 
             //テキストを入れ替えます。
             //document.getElementById("result").innerHTML = movedDistance / baseDistance;
-            document.getElementById("result").innerHTML = xDist;
+  
         }
 
-        //document.getElementById("canvas1").onmouseup = function (event) {
-        document.getElementById("canvas1").touchend = function (event) {
+        //Mouse UP
+        document.getElementById("canvas1").onmouseup = function (event) {
+        //document.getElementById("canvas1").touchend = function (event) {
             console.log('Up');
             xDist = 0;
             yDist = 0;
             dragging = false;
+
         }
 
         //フォームが持つデフォルトの動作をキャンセルするメソッドです。
         document.ontouchmove = function () { event.preventDefault(); }
+
+        /* -----------------------------------------------------------------
+        Voice のきりかえ
+        -------------------------------------------------------------------- */
+        // document.getElementById("result").innerHTML = bitmap.scaleX;
+        // document.getElementById("result").style.color = "red";
     }
 
-    // 加速度データをグラフ表示する displayData
+
+
+    /* -----------------------------------------------------------------
+    displayData 加速度データをグラフ表示する
+    -------------------------------------------------------------------- */
     function displayData() {
 
         if ( ! canvas || ! canvas.getContext ) { return false; }
@@ -320,25 +528,25 @@
         }
         
         //軌跡
-        for ( idx in varr ){
-            if ( idx > canvas.clientWidth ) break;
-            var dat = varr[idx];
+        // for ( idx in varr ){
+        //     if ( idx > canvas.clientWidth ) break;
+        //     var dat = varr[idx];
 
-            if(idx == 0){
-                preX = dat.x;
-                preY = dat.y;
-            }
+        //     if(idx == 0){
+        //         preX = dat.x;
+        //         preY = dat.y;
+        //     }
 
-            // 跡を書く
-            ctx.strokeStyle = "green";
-            ctx.beginPath();
-            ctx.moveTo(dat.x,dat.y);
-            ctx.lineTo(preX,preY);
-            ctx.stroke();
+        //     // 跡を書く
+        //     ctx.strokeStyle = "green";
+        //     ctx.beginPath();
+        //     ctx.moveTo(dat.x,dat.y);
+        //     ctx.lineTo(preX,preY);
+        //     ctx.stroke();
 
-            preX = dat.x;
-            preY = dat.y;
-        }
+        //     preX = dat.x;
+        //     preY = dat.y;
+        // }
 
         // 加速度
         var _varr = [];
@@ -384,7 +592,9 @@
         window.requestAnimationFrame(loop);
     }());
 
-    // /* ピッチインピッチアウトによる拡大縮小を禁止 */
+    /* -----------------------------------------------------------------
+    ピッチインピッチアウトによる拡大縮小を禁止
+    -------------------------------------------------------------------- */
     document.documentElement.addEventListener('touchstart', function (e) {
         if (e.touches.length >= 2) { e.preventDefault(); }
     }, { passive: false });
