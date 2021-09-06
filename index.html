@@ -12,9 +12,12 @@
     <div id="wrap">
         <div id="mask" class="hidden"></div>
         <section id="modal" class="hidden">
-            <p>Please note that a very obscene voice will be played.<br>とても卑猥な音声が流れるので注意してください。</p>
+            <p>Please note that a very obscene voice will be played.<br>卑猥な音声が流れるので注意してください。</p>
             <div id="close">
             閉じる
+            </div>
+            <div id="result" align="center">
+                <img src="qr_code.png" alt="海の写真" title="空と海">
             </div>
         </section>
 
@@ -24,9 +27,6 @@
         <div id="top">
             <canvas id="graph" width="380" height="100"></canvas>
             <div id="result" align="center">タッチセンサー</div>
-            <div id="result" align="center">
-                <img src="qr_code.png" alt="海の写真" title="空と海">
-            </div>
         </div>
     </div>
 </body>
@@ -100,7 +100,7 @@
         background: #fff;
         color: #555;
         width: 300px;
-        padding: 40px;
+        padding: 10px;
         border-radius: 4px;
         position: fixed;
             top: 50%;
