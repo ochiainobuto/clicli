@@ -235,8 +235,8 @@
             /* -----------------------------------------------------------------
             Voice のきりかえ
             -------------------------------------------------------------------- */
-            document.getElementById("result").innerHTML = bitmap.scaleX;
-            document.getElementById("result").style.color = "red";
+            // document.getElementById("result").innerHTML = bitmap.scaleX;
+            // document.getElementById("result").style.color = "red";
 
             // voice1.volume = (Math.min(Math.max(0, bitmap.scaleX), 0.5) - 0.3)*0.5;
             // voice2.volume = (Math.min(Math.max(0.5, bitmap.scaleX), 0.8) - 0.5)*0.33;
@@ -458,9 +458,9 @@
 
                     ///// Sound Play
                 
-                    if(audio.ended == true){
-                        audio.currentTime = 0;
+                    if(audio.currentTime > 0.7){
                         audio.src = playlist[Math.floor( Math.random() * playlist.length)];
+                        audio.currentTime = 0;
                         console.log(audio.src);
                         audio.play();
                     }
@@ -482,7 +482,8 @@
             }
 
             //テキストを入れ替えます。
-            document.getElementById("result").innerHTML = movedDistance / baseDistance;
+            document.getElementById("result").style.color = "red";
+            document.getElementById("result").innerHTML = xDist + yDist;
   
         }
 
