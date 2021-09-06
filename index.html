@@ -265,15 +265,15 @@
         count += 1;
         text.text = "Click!" + count;
         console.log(count);
-        if(window.navigator.vibrate){
-            window.navigator.vibrate([200,200,200,200,200]);
-          }else if(window.navigator.mozVibrate){
-            window.navigator.mozVibrate([200,200,200]);
-          }else if(window.navigator.webkitVibrate){
-            window.navigator.webkitVibrate([200]);
-          }else{
-            alert("sorry (T-T)");
-          } 
+        // if(window.navigator.vibrate){
+        //     window.navigator.vibrate([200,200,200,200,200]);
+        //   }else if(window.navigator.mozVibrate){
+        //     window.navigator.mozVibrate([200,200,200]);
+        //   }else if(window.navigator.webkitVibrate){
+        //     window.navigator.webkitVibrate([200]);
+        //   }else{
+        //     alert("sorry (T-T)");
+        //   } 
 
         console.log('Click');
         dragging = true;
@@ -408,8 +408,8 @@
         var x0 = 0;
         var y0 = 0;
         var dragging;
+
         // Click ON
-        _
         //document.getElementById("canvas1").onmousedown = function (event) {
         document.getElementById("canvas1").ontouchstart = function (event) {
             console.log('Down');
@@ -431,7 +431,7 @@
         //Drag Over
         //document.getElementById("canvas1").onmousemove = function (event) {
         document.getElementById("canvas1").ontouchmove = function (event) {
-            //console.log('Drag');
+            console.log('Drag');
             if (event.changedTouches) {
                 xDist = event.changedTouches[0].pageX - x0;
                 yDist = event.changedTouches[0].pageY - y0;
@@ -482,7 +482,7 @@
             }
 
             //テキストを入れ替えます。
-            //document.getElementById("result").innerHTML = movedDistance / baseDistance;
+            document.getElementById("result").innerHTML = movedDistance / baseDistance;
   
         }
 
@@ -499,11 +499,6 @@
         //フォームが持つデフォルトの動作をキャンセルするメソッドです。
         document.ontouchmove = function () { event.preventDefault(); }
 
-        /* -----------------------------------------------------------------
-        Voice のきりかえ
-        -------------------------------------------------------------------- */
-        // document.getElementById("result").innerHTML = bitmap.scaleX;
-        // document.getElementById("result").style.color = "red";
     }
 
 
