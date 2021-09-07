@@ -417,8 +417,8 @@
         var previous_num;
 
         // Click ON
-        document.getElementById("canvas1").onmousedown = function (event) {
-        //document.getElementById("canvas1").ontouchstart = function (event) {
+        //document.getElementById("canvas1").onmousedown = function (event) {
+        document.getElementById("canvas1").ontouchstart = function (event) {
             console.log('Down');
             if (event.changedTouches) {
                 x0 = event.changedTouches[0].pageX;
@@ -430,16 +430,12 @@
             }
             dragging = true;
             
-            // var randnum = Math.floor( Math.random() * playlist.length);
-            // audio.src = playlist[randnum];
-            // console.log(audio.src);
-            // audio.play();  // 再生
             previous_num = Math.floor( Math.random() * voice_list.length);
             voice_list[previous_num].play(); 
         }
         //Drag Over
-        document.getElementById("canvas1").onmousemove = function (event) {
-        //document.getElementById("canvas1").ontouchmove = function (event) {
+        //document.getElementById("canvas1").onmousemove = function (event) {
+        document.getElementById("canvas1").ontouchmove = function (event) {
             console.log('Drag');
             if (event.changedTouches) {
                 xDist = event.changedTouches[0].pageX - x0;
@@ -495,8 +491,8 @@
         }
 
         //Mouse UP
-        document.getElementById("canvas1").onmouseup = function (event) {
-        //document.getElementById("canvas1").touchend = function (event) {
+        //document.getElementById("canvas1").onmouseup = function (event) {
+        document.getElementById("canvas1").touchend = function (event) {
             console.log('Up');
             xDist = 0;
             yDist = 0;
