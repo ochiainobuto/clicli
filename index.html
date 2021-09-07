@@ -383,20 +383,26 @@
     var audio = document.createElement('audio');
     document.body.appendChild(audio);
     var playlist = [
-    './voice/neiki_01-01.wav',
-    './voice/neiki_01-02.wav',
-    './voice/neiki_01-03.wav',
-    './voice/neiki_01-04.wav',
-    './voice/neiki_01-05.wav',
-    './voice/neiki_01-06.wav',
-    './voice/neiki_01-07.wav',
-    './voice/neiki_01-08.wav',
-    './voice/neiki_01-09.wav',
-    './voice/neiki_01-10.wav',
-    './voice/neiki_01-11.wav',
-    './voice/neiki_01-12.wav'
+    './voice/neiki_01-01.mp3',
+    './voice/neiki_01-02.mp3',
+    './voice/neiki_01-03.mp3',
+    './voice/neiki_01-04.mp3',
+    './voice/neiki_01-05.mp3',
+    './voice/neiki_01-06.mp3',
+    './voice/neiki_01-07.mp3',
+    './voice/neiki_01-08.mp3',
+    './voice/neiki_01-09.mp3',
+    './voice/neiki_01-10.mp3',
+    './voice/neiki_01-11.mp3',
+    './voice/neiki_01-12.mp3'
     ]
-
+    var voice_list = [];
+    for (var value of playlist) {
+        var voice = new Audio();
+        voice.src = value; // 音声ファイルの指定
+        voice.load(); // audioの読み込み
+        voice_list.push(voice);
+    }
 
     /* -----------------------------------------------------------------
     Update 値を監視して、常にストレッチを更新する 
@@ -408,10 +414,11 @@
         var x0 = 0;
         var y0 = 0;
         var dragging;
+        var previous_num;
 
         // Click ON
-        //document.getElementById("canvas1").onmousedown = function (event) {
-        document.getElementById("canvas1").ontouchstart = function (event) {
+        document.getElementById("canvas1").onmousedown = function (event) {
+        //document.getElementById("canvas1").ontouchstart = function (event) {
             console.log('Down');
             if (event.changedTouches) {
                 x0 = event.changedTouches[0].pageX;
@@ -423,14 +430,16 @@
             }
             dragging = true;
             
-            var randnum = Math.floor( Math.random() * playlist.length);
-            audio.src = playlist[randnum];
-            console.log(audio.src);
-            audio.play();  // 再生
+            // var randnum = Math.floor( Math.random() * playlist.length);
+            // audio.src = playlist[randnum];
+            // console.log(audio.src);
+            // audio.play();  // 再生
+            previous_num = Math.floor( Math.random() * voice_list.length);
+            voice_list[previous_num].play(); 
         }
         //Drag Over
-        //document.getElementById("canvas1").onmousemove = function (event) {
-        document.getElementById("canvas1").ontouchmove = function (event) {
+        document.getElementById("canvas1").onmousemove = function (event) {
+        //document.getElementById("canvas1").ontouchmove = function (event) {
             console.log('Drag');
             if (event.changedTouches) {
                 xDist = event.changedTouches[0].pageX - x0;
@@ -458,11 +467,9 @@
 
                     ///// Sound Play
                 
-                    if(audio.currentTime > 0.7){
-                        audio.src = playlist[Math.floor( Math.random() * playlist.length)];
-                        audio.currentTime = 0;
-                        console.log(audio.src);
-                        audio.play();
+                    if(voice_list[previous_num].currentTime > 0.7){
+                        previous_num = Math.floor( Math.random() * voice_list.length);
+                        voice_list[previous_num].play(); 
                     }
                 }
             }
@@ -488,8 +495,8 @@
         }
 
         //Mouse UP
-        //document.getElementById("canvas1").onmouseup = function (event) {
-        document.getElementById("canvas1").touchend = function (event) {
+        document.getElementById("canvas1").onmouseup = function (event) {
+        //document.getElementById("canvas1").touchend = function (event) {
             console.log('Up');
             xDist = 0;
             yDist = 0;
