@@ -12,14 +12,27 @@
     <div id="wrap">
         <div id="mask" class="hidden"></div>
         <section id="modal" class="hidden">
+            <div id="qr_code" align="center">
+                <img src="Artgasm.png" alt="海の写真" title="Artgasm">
+            </div>
             <div id="message">
-                <p>Please note that a very obscene voice will be played.<br>卑猥な音声が流れるので注意してください。</p>
+                <p>You will reach orgasm when your fingers touch very slowly.
+                    <br>You need to find the best position.
+                    <br>Sounds and line graphs will help.
+                    <br>Feel the change with movement.
+                    <br>
+                    <br>あなたの指がとてもゆっくり触る時、オーガズムに達するでしょう。
+                    <br>ベストの位置を探す必要があります。
+                    <br>音と線グラフが助けになるでしょ。
+                    <br>動きによっての変化を感じてください。
+                </p>
             </div>
             <div id="close">
                 START!!!
             </div>
+            <br>
             <div id="qr_code" align="center">
-                <img src="qr_code.png" alt="海の写真" title="空と海">
+                <img src="qr_code.png" alt="海の写真" title="qr_code">
             </div>
         </section>
         <div id="top">
@@ -70,9 +83,9 @@
         border: 1px solid #ccc;
         border-radius: 4px;
         text-align: center;
-        padding: 12px;
-        margin: 16px auto 0;
-        background: #4caf50;
+        padding: 6px;
+        margin: 6px auto 0;
+        background: rgba(112, 112, 112, 0.4);
         color: white;
         position: relative;
         top: 30%;
@@ -89,13 +102,13 @@
     }
 
     #modal {
-        background: #fff;
-        color: #555;
+        background: rgba(26, 87, 130, 0.6);
+        color: rgb(168, 168, 168);
         width: 300px;
         padding: 10px;
         border-radius: 4px;
         position: fixed;
-        top: 50%;
+        top: 45%;
         left: 50%;
         transform: translate(-50%, -50%);
         -webkit-transform: translate(-50%, -50%);
@@ -571,7 +584,6 @@
                     y0 = event.pageY;
 
                     ///////// 感度のメソッド //////////
-
                     var point = Math.abs(xDist) + Math.abs(yDist)
                     if (point < 8) {
                         Dist0 = Dist0 + 0.25;
@@ -592,10 +604,10 @@
                     if (voice_list[previous_num].ended) {
                         previous_num = Math.floor(Math.random() * voice_list.length);
                         voice_list[previous_num].currentTime = 0;
-                        setTimeout(function () {
-                            voice_list[previous_num].play();
-                        }, 400);
-                        //voice_list[previous_num].play(); 
+                        // setTimeout(function () {
+                        //     voice_list[previous_num].play();
+                        // }, 400);
+                        voice_list[previous_num].play();
                     }
                 }
             }
