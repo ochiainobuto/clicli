@@ -152,6 +152,7 @@
         h3_point_x = canvas.width * 0.5 + Math.floor((Math.random() * 2 - 1) * canvas.width * 0.05);
         h3_point.y = canvas.height * 0.6 + Math.floor((Math.random() * 2 - 1) * canvas.height * 0.2);
     });
+
     mask.addEventListener('click', function () {
         modal.classList.add('hidden');
         mask.classList.add('hidden');
@@ -241,7 +242,7 @@
 
     // 上の画像の先読み処理
     var img = new Image();
-    img.src = "fr2.png";
+    img.src = "bg2.png";
 
     /* -----------------------------------------------------------------
     createjsのモデルを配置　画像の読み込み完了後に Bitmap のインスタンスを作成する
