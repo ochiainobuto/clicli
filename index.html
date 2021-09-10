@@ -604,12 +604,13 @@
                     if (voice_list[previous_num].ended) {
                         previous_num = Math.floor(Math.random() * voice_list.length);
                         voice_list[previous_num].currentTime = 0;
-                        // setTimeout(function () {
-                        //     voice_list[previous_num].play();
-                        // }, 400);
-                        voice_list[previous_num].play();
+                        setTimeout(function () {
+                            voice_list[previous_num].play();
+                        }, 400);
+                        //voice_list[previous_num].play();
                     }
-                    voice_list[previous_num].play();
+
+                    value_text.text = previous_num;
                 }
             }
 
@@ -746,8 +747,8 @@
             _preX = dy1;
             _preY = dy2;
             _preZ = dy3;
-            o_value = 1.0 - (dy3 / _canvas.clientHeight);
-            value_text.text = o_value;
+            // o_value = 1.0 - (dy3 / _canvas.clientHeight);
+            // value_text.text = o_value;
             //console.log(dy3);
         }
 
