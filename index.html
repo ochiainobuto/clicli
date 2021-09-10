@@ -600,6 +600,13 @@
                     drag();
                     stage.update();
 
+                    previous_num = Math.floor(Math.random() * voice_list.length);
+                    voice_list[previous_num].currentTime = 0;
+                    setTimeout(function () {
+                        voice_list[previous_num].play();
+                    }, 400);
+                    value_text.text = previous_num;
+
                     ///// Sound Play
                     if (voice_list[previous_num].ended) {
                         previous_num = Math.floor(Math.random() * voice_list.length);
