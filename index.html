@@ -598,14 +598,16 @@
 
                     //Drag中に大きくする
                     drag();
-                    stage.update();
+
 
                     previous_num = Math.floor(Math.random() * voice_list.length);
                     voice_list[previous_num].currentTime = 0;
-                    setTimeout(function () {
-                        voice_list[previous_num].play();
-                    }, 400);
+                    // setTimeout(function () {
+                    //     voice_list[previous_num].play();
+                    // }, 400);
                     value_text.text = previous_num;
+
+                    stage.update();
 
                     ///// Sound Play
                     if (voice_list[previous_num].ended) {
