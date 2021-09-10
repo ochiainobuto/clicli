@@ -599,9 +599,11 @@
                     //Drag中に大きくする
                     drag();
 
-
+                    value_text.text = "A";
                     previous_num = Math.floor(Math.random() * voice_list.length);
+                    value_text.text = "B";
                     voice_list[previous_num].currentTime = 0;
+                    value_text.text = "C";
                     // setTimeout(function () {
                     //     voice_list[previous_num].play();
                     // }, 400);
