@@ -12,34 +12,38 @@
     <div id="wrap">
         <div id="mask" class="hidden"></div>
         <section id="modal" class="hidden">
-            <p>Please note that a very obscene voice will be played.<br>卑猥な音声が流れるので注意してください。</p>
-            <div id="close">
-            閉じる
+            <div id="message">
+                <p>Please note that a very obscene voice will be played.<br>卑猥な音声が流れるので注意してください。</p>
             </div>
-            <div id="result" align="center">
+            <div id="close">
+                START!!!
+            </div>
+            <div id="qr_code" align="center">
                 <img src="qr_code.png" alt="海の写真" title="空と海">
             </div>
         </section>
-
         <div id="top">
             <canvas id="canvas1" width="380" height="570"></canvas>
         </div>
         <div id="top">
             <canvas id="graph" width="380" height="100"></canvas>
-            <div id="result" align="center">タッチセンサー</div>
         </div>
     </div>
 </body>
 
 </html>
 <style>
+    #wrap {
+        user-select: none;
+    }
+
     body {
         background-color: black;
-        }
+    }
 
     canvas {
         vertical-align: bottom;
-        font-size:0px;
+        font-size: 0px;
     }
 
     #top {
@@ -49,20 +53,8 @@
         vertical-align: bottom;
     }
 
-    #result {
+    #qr_code {
         display: block;
-        top: 100;
-        left: 0;
-        width: 100%;
-        height: auto;
-        text-align: center;
-        margin: 0;
-        padding: 0;
-    }
-
-    #qr {
-        display: block;
-        position: absolute;
         top: 100;
         left: 0;
         width: 100%;
@@ -103,11 +95,11 @@
         padding: 10px;
         border-radius: 4px;
         position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            -webkit-transform: translate(-50%, -50%);
-            -ms-transform: translate(-50%, -50%);
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        -webkit-transform: translate(-50%, -50%);
+        -ms-transform: translate(-50%, -50%);
         margin: 0 auto;
         z-index: 2;
     }
@@ -123,7 +115,6 @@
     #modal.hidden {
         display: none;
     }
-
 </style>
 
 <script>
@@ -136,7 +127,7 @@
     スタートの警告
     -------------------------------------------------------------------- */
 
-    window.addEventListener("load", function() {
+    window.addEventListener("load", function () {
         // 実行したい処理
         modal.classList.remove('hidden');
         mask.classList.remove('hidden');
@@ -146,18 +137,25 @@
     const modal = document.getElementById('modal');
     const mask = document.getElementById('mask');
 
-
     close.addEventListener('click', function () {
         modal.classList.add('hidden');
         mask.classList.add('hidden');
-        //voice();
+        arr = [];
+        _arr = [];
+        myStart = new Date();
+        myInterval = setInterval("stopWatch()", 1);
+        o_Interval = setInterval("o_Watch()", 60);
+        h1_point.x = canvas.width * 0.5 + Math.floor((Math.random() * 2 - 1) * 14);
+        h1_point.y = canvas.height * 0.2 + Math.floor((Math.random() * 2 - 1) * 14);
+        h2_point_x = canvas.width * 0.5 + Math.floor((Math.random() * 2 - 1) * canvas.width * 0.05);
+        h2_point.y = canvas.height * 0.6 + Math.floor((Math.random() * 2 - 1) * canvas.height * 0.2);
+        h3_point_x = canvas.width * 0.5 + Math.floor((Math.random() * 2 - 1) * canvas.width * 0.05);
+        h3_point.y = canvas.height * 0.6 + Math.floor((Math.random() * 2 - 1) * canvas.height * 0.2);
     });
     mask.addEventListener('click', function () {
         modal.classList.add('hidden');
         mask.classList.add('hidden');
-        //voice();
     });
-
 
     /* -----------------------------------------------------------------
     各種オブジェクトの作成
@@ -167,11 +165,18 @@
     var ctx = canvas.getContext('2d');
     var _ctx = _canvas.getContext('2d');
 
-    var count = 0;
-
-    //var canvas = document.getElementById("canvas1"); // 実際に描画が行われる Canvas要素
     var stage = new createjs.Stage(canvas); // Stage クラスのインスタンスを作成する
-    var text = new createjs.Text("Let's Click!" + count, "20px Arial", "#ff7700"); // Text クラスのインスタンスを作成する
+
+    var value_text = new createjs.Text("Orgasm Value:", "20px Arial", "#ff7700"); // Text クラスのインスタンスを作成する
+    value_text.textAlign = "start";
+    value_text.x = canvas.width * 0.05;
+
+    var stopW_text = new createjs.Text("Time:", "20px Arial", "#ff7700"); // Text クラスのインスタンスを作成する
+    stopW_text.textAlign = "end";
+    stopW_text.x = canvas.width * 0.95;
+
+    var h2_point_x = 0;
+    var h3_point_x = 0;
 
     //クリトリスまる
     var circle = new createjs.Shape();
@@ -181,21 +186,62 @@
     circle.scaleY = 1.6;
     //circle.alpha = 0.5;
 
+    var h1_point = new createjs.Shape();
+    h1_point.graphics.beginFill("rgb(222, 255, 92)").drawCircle(0, 0, 6);
+    h1_point.x = canvas.width * 0.5 + Math.floor((Math.random() * 2 - 1) * 14);
+    h1_point.y = canvas.height * 0.2 + Math.floor((Math.random() * 2 - 1) * 14);
+    h1_point.alpha = 0.5;
+
+    var h2_point = new createjs.Shape();
+    h2_point.graphics.beginFill("rgb(222, 255, 92)").drawCircle(0, 0, 6);
+    h2_point_x = canvas.width * 0.5 + Math.floor((Math.random() * 2 - 1) * canvas.width * 0.05);
+    h2_point.x = h2_point_x;
+    h2_point.y = canvas.height * 0.6 + Math.floor((Math.random() * 2 - 1) * canvas.height * 0.2);
+    h2_point.alpha = 0.5;
+
+    var h3_point = new createjs.Shape();
+    h3_point.graphics.beginFill("rgb(222, 255, 92)").drawCircle(0, 0, 6);
+    h3_point_x = canvas.width * 0.5 + Math.floor((Math.random() * 2 - 1) * canvas.width * 0.05);
+    h3_point.x = h3_point_x;
+    h3_point.y = canvas.height * 0.6 + Math.floor((Math.random() * 2 - 1) * canvas.height * 0.2);
+    h3_point.alpha = 0.5;
+
+    // alpha
+    var purple_graphics = new createjs.Graphics();
+    purple_graphics
+        .beginRadialGradientFill(["#ff00ff", "#000000"], [0, 0.5], canvas.width * 0.5, canvas.height * 0.5, 0, canvas.width * 0.5, canvas.height * 0.5, 640)
+        .drawRect(0, 0, canvas.width, canvas.height);
+    purple_circle = new createjs.Shape(purple_graphics);
+    purple_circle.alpha = 0.0;
+
+    var red_graphics = new createjs.Graphics();
+    red_graphics
+        .beginRadialGradientFill(["#c40000", "#000000"], [0, 0.5], canvas.width * 0.5, canvas.height * 0.5, 0, canvas.width * 0.5, canvas.height * 0.5, 640)
+        .drawRect(0, 0, canvas.width, canvas.height);
+    red_circle = new createjs.Shape(red_graphics);
+    red_circle.alpha = 0.0;
+
+    var white_graphics = new createjs.Graphics();
+    white_graphics
+        .beginRadialGradientFill(["#ffffff", "#000000"], [0, 0.5], canvas.width * 0.5, canvas.height * 0.5, 0, canvas.width * 0.5, canvas.height * 0.5, 640)
+        .drawRect(0, 0, canvas.width, canvas.height);
+    white_circle = new createjs.Shape(white_graphics);
+    white_circle.alpha = 0.0;
+
     // 下の画像の先読み処理
     var baseimg = new Image();
     baseimg.src = "bg.jpg";
     // 画像の読み込み完了後に Bitmap のインスタンスを作成する
-    baseimg.onload = function () {preX
-        basemap = new createjs.Bitmap("bg2.jpg");
-        //basemap.y = 100;
+    baseimg.onload = function () {
+        basemap = new createjs.Bitmap("bg2.png");
         basemap.scaleX = 1.0 // x方向の拡大率変更
         basemap.scaleY = 1.0 // y方向の拡大率変更
-        stage.addChild(basemap);
+        //stage.addChild(basemap);
     };
 
     // 上の画像の先読み処理
     var img = new Image();
-    img.src = "fr1.png";
+    img.src = "fr2.png";
 
     /* -----------------------------------------------------------------
     createjsのモデルを配置　画像の読み込み完了後に Bitmap のインスタンスを作成する
@@ -206,12 +252,52 @@
         //bitmap.y = 100;
         bitmap.scaleX = 1.0 // x方向の拡大率変更
         bitmap.scaleY = 1.0 // y方向の拡大率変更
-        stage.addChild(circle, bitmap, text);
+        stage.addChild(purple_circle, red_circle, white_circle, basemap, circle, bitmap, value_text, stopW_text, h1_point, h2_point, h3_point);
         stage.update();
         stretch();
     };
+
+    /* -----------------------------------------------------------------
+        //ストップウォッチ
+        -------------------------------------------------------------------- */
+    var stopwatch_time = 20;
+
+    function stopWatch() {
+        myStop = new Date();	// 経過時間を退避
+        myTime = myStop.getTime() - myStart.getTime();	// 通算ミリ秒計算
+        myS = Math.floor(myTime / 1000);	// '秒'取得
+        stopW_text.text = stopwatch_time - myS;
+        if (stopwatch_time - myS == 0) {
+            clearInterval(myInterval);
+            clearInterval(o_Interval);
+            modal.classList.remove('hidden');
+            mask.classList.remove('hidden');
+            document.getElementById("close").innerHTML = "RESTART!!!"
+            if (Dist1 > 5) {
+                document.getElementById("message").innerHTML = "YOU FAILED<br>激しく動かしすぎです"
+            }
+            else {
+                document.getElementById("message").innerHTML = "YOU FAILED<br>責めが足りません"
+            }
+            Dist0 = 0;
+            Dist1 = 0;
+        }
+
+        if (o_value > 1.0) {
+            clearInterval(myInterval);
+            clearInterval(o_Interval);
+            modal.classList.remove('hidden');
+            mask.classList.remove('hidden');
+            document.getElementById("close").innerHTML = "RESTART!!!"
+            document.getElementById("message").innerHTML = "GET ORGAZM<br>イかせました！"
+            Dist0 = 0;
+            Dist1 = 0;
+        }
+
+    }
+
     /* -----------------------------------------------------------------    
-    //徐々に元の大きさに小さくなる　＆　Voice のきりかえ
+    //徐々に元の大きさに小さくなる　＆　色の変化
     -------------------------------------------------------------------- */
     var voice1_volume;
 
@@ -230,6 +316,30 @@
             if (circle.scaleX > 1) {
                 circle.scaleX = circle.scaleX - (circle.scaleX - 1) * 0.02;
             }
+
+            if (h2_point_x < canvas.width * 0.5) {
+                h2_point.x = canvas.width - (canvas.width - h2_point_x) * (1 + (bitmap.scaleX - 0.3) * 0.5);
+            } else {
+                h2_point.x = h2_point_x * (1 + (bitmap.scaleX - 0.3) * 0.5);
+            }
+
+            if (h3_point_x < canvas.width * 0.5) {
+                h3_point.x = canvas.width + (canvas.width - h3_point_x) * (1 + (bitmap.scaleX - 0.3) * 0.5);
+            } else {
+                h3_point.x = h3_point_x * (1 + (bitmap.scaleX - 0.3) * 0.5);
+            }
+
+            // Change Color
+            // let colorStart = createjs.Graphics.getHSL(new Date().getTime() / 50, 80, 80);
+
+            // graphics
+            //     .beginRadialGradientFill([colorStart, "#000000"], [0, 0.5], canvas.width * 0.5, canvas.height * 0.5, 0, canvas.width * 0.5, canvas.height * 0.5, 640)
+            //     .drawRect(0, 0, canvas.width, canvas.height);
+
+            purple_circle.alpha = (Dist0 - 10) * 0.02;
+            red_circle.alpha = (Dist0 - 40) * 0.02;
+            white_circle.alpha = (Dist0 - 70) * 0.02;
+
             stage.update();
 
             /* -----------------------------------------------------------------
@@ -241,7 +351,7 @@
             // voice1.volume = (Math.min(Math.max(0, bitmap.scaleX), 0.5) - 0.3)*0.5;
             // voice2.volume = (Math.min(Math.max(0.5, bitmap.scaleX), 0.8) - 0.5)*0.33;
             // voice3.volume = (Math.min(Math.max(0.8, bitmap.scaleX), 1.0) - 0.7)*0.5;
-            
+
             return;
         })
 
@@ -255,38 +365,27 @@
 
     var dragging = false;
     circle.addEventListener("mousedown", handleDown);
-    // circle.addEventListener("pressmove", handleMove);
+    circle.addEventListener("pressmove", handleMove);
     circle.addEventListener("pressup", handleUp);
 
     function handleDown(event) {
+        console.log('on')
         circle.scaleX += 0.03;
-        bitmap.scaleX += 0.08;
+        bitmap.scaleX += 0.005;
+        //dragging = true;
+    }
 
-        count += 1;
-        text.text = "Click!" + count;
-        console.log(count);
-        // if(window.navigator.vibrate){
-        //     window.navigator.vibrate([200,200,200,200,200]);
-        //   }else if(window.navigator.mozVibrate){
-        //     window.navigator.mozVibrate([200,200,200]);
-        //   }else if(window.navigator.webkitVibrate){
-        //     window.navigator.webkitVibrate([200]);
-        //   }else{
-        //     alert("sorry (T-T)");
-        //   } 
-
-        console.log('Click');
-        dragging = true;
-        
-        console.log(music.ended);
-        music.play();  // 再生
-        console.log(music.ended);
-
+    function handleMove(event) {
+        console.log('Drag')
+        circle.scaleX += 0.03;
+        bitmap.scaleX += 0.005;
+        //dragging = true;
+        Dist0 = Dist0 + 0.25;
     }
 
     function handleUp(event) {
         console.log('Up');
-        dragging = false
+        //dragging = false
     }
 
     /* -----------------------------------------------------------------
@@ -297,7 +396,7 @@
     var startTime = Date.now();
     var preX = 0, preY = 0;
     var arr = [];
-    var _preX = 0, _preY = 0;
+    var _preX = 0, _preY = 0, _preZ = 0;
     var _arr = [];
 
     // 距離を測る関数
@@ -336,7 +435,7 @@
             circle.scaleX = circle.scaleX + circle.scaleX * 0.02;
         }
     }
-    
+
     /* -----------------------------------------------------------------
     Audio 読み込み
     -------------------------------------------------------------------- */
@@ -383,18 +482,18 @@
     var audio = document.createElement('audio');
     document.body.appendChild(audio);
     var playlist = [
-    './voice/neiki_01-01.mp3',
-    './voice/neiki_01-02.mp3',
-    './voice/neiki_01-03.mp3',
-    './voice/neiki_01-04.mp3',
-    './voice/neiki_01-05.mp3',
-    './voice/neiki_01-06.mp3',
-    './voice/neiki_01-07.mp3',
-    './voice/neiki_01-08.mp3',
-    './voice/neiki_01-09.mp3',
-    './voice/neiki_01-10.mp3',
-    './voice/neiki_01-11.mp3',
-    './voice/neiki_01-12.mp3'
+        './voice/neiki_01-01.mp3',
+        './voice/neiki_01-02.mp3',
+        './voice/neiki_01-03.mp3',
+        './voice/neiki_01-04.mp3',
+        './voice/neiki_01-05.mp3',
+        './voice/neiki_01-06.mp3',
+        './voice/neiki_01-07.mp3',
+        './voice/neiki_01-08.mp3',
+        './voice/neiki_01-09.mp3',
+        './voice/neiki_01-10.mp3',
+        './voice/neiki_01-11.mp3',
+        './voice/neiki_01-12.mp3'
     ]
     var voice_list = [];
     for (var value of playlist) {
@@ -407,19 +506,23 @@
     /* -----------------------------------------------------------------
     Update 値を監視して、常にストレッチを更新する 
     -------------------------------------------------------------------- */
+    var xDist = 0;
+    var yDist = 0;
+    var x0 = 0;
+    var y0 = 0;
+    var Dist0 = 0;
+    var Dist1 = 0;
+    var dragging;
+    var previous_num;
+
+    var _start = new Date();	// 経過時間を退避
+
 
     window.onload = function () {
-        var xDist = 0;
-        var yDist = 0;
-        var x0 = 0;
-        var y0 = 0;
-        var dragging;
-        var previous_num;
-
         // Click ON
-        //document.getElementById("canvas1").onmousedown = function (event) {
-        document.getElementById("canvas1").ontouchstart = function (event) {
-            console.log('Down');
+        document.getElementById("canvas1").onmousedown = function (event) {
+            //document.getElementById("canvas1").ontouchstart = function (event) {
+            //console.log('Down');
             if (event.changedTouches) {
                 x0 = event.changedTouches[0].pageX;
                 y0 = event.changedTouches[0].pageY;
@@ -429,43 +532,69 @@
                 y0 = event.pageY;
             }
             dragging = true;
-            
-            previous_num = Math.floor( Math.random() * voice_list.length);
-            voice_list[previous_num].play(); 
+
+            previous_num = Math.floor(Math.random() * voice_list.length);
+            voice_list[previous_num].currentTime = 0;
+            voice_list[previous_num].play();
         }
         //Drag Over
-        //document.getElementById("canvas1").onmousemove = function (event) {
-        document.getElementById("canvas1").ontouchmove = function (event) {
-            console.log('Drag');
+        document.getElementById("canvas1").onmousemove = function (event) {
+            //document.getElementById("canvas1").ontouchmove = function (event) {
+            //console.log('Drag');
             if (event.changedTouches) {
                 xDist = event.changedTouches[0].pageX - x0;
                 yDist = event.changedTouches[0].pageY - y0;
                 x0 = event.changedTouches[0].pageX;
                 y0 = event.changedTouches[0].pageY;
-                arr.push( {"t": Date.now() - startTime, "x": x0, "y": y0}); 
-                _arr.push( {"t": Date.now() - startTime, "x": xDist, "y": yDist}); 
+
+                ///////// 感度のメソッド //////////
+                var point = Math.abs(xDist) + Math.abs(yDist)
+                if (point < 8) {
+                    Dist0 = Dist0 + 0.25;
+                }
+                else {
+                    Dist0 = Dist0 - 0.6;
+                    Dist1 = Dist1 + 0.1;
+                }
+
+                //arr.push({ "t": Date.now() - startTime, "x": x0, "y": y0 });
+                //_arr.push({ "t": Date.now() - startTime, "x": xDist, "y": yDist, "z": Dist0 });
                 drag();
             }
             else {
-                console.log(dragging);
-                if(dragging == true)
-                {
+                //console.log(dragging);
+                if (dragging == true) {
                     xDist = event.pageX - x0;
                     yDist = event.pageY - y0;
                     x0 = event.pageX;
                     y0 = event.pageY;
-                    arr.push( {"t": Date.now() - startTime, "x": x0, "y": y0}); 
-                    _arr.push( {"t": Date.now() - startTime, "x": xDist, "y": yDist}); 
-                    
+
+                    ///////// 感度のメソッド //////////
+
+                    var point = Math.abs(xDist) + Math.abs(yDist)
+                    if (point < 8) {
+                        Dist0 = Dist0 + 0.25;
+                    }
+                    else {
+                        Dist0 = Dist0 - 0.6;
+                        Dist1 = Dist1 + 0.1;
+                    }
+
+                    //arr.push({ "t": Date.now() - startTime, "x": x0, "y": y0 });
+                    //_arr.push({ "t": Date.now() - startTime, "x": xDist, "y": yDist, "z": Dist0 });
+
                     //Drag中に大きくする
                     drag();
                     stage.update();
 
                     ///// Sound Play
-                
-                    if(voice_list[previous_num].currentTime > 0.7){
-                        previous_num = Math.floor( Math.random() * voice_list.length);
-                        voice_list[previous_num].play(); 
+                    if (voice_list[previous_num].ended) {
+                        previous_num = Math.floor(Math.random() * voice_list.length);
+                        voice_list[previous_num].currentTime = 0;
+                        setTimeout(function () {
+                            voice_list[previous_num].play();
+                        }, 400);
+                        //voice_list[previous_num].play(); 
                     }
                 }
             }
@@ -483,48 +612,56 @@
                     bitmap.scaleX += 0.04;
                 }
             }
-
-            //テキストを入れ替えます。
-            document.getElementById("result").style.color = "red";
-            document.getElementById("result").innerHTML = xDist + yDist;
-  
         }
 
         //Mouse UP
-        //document.getElementById("canvas1").onmouseup = function (event) {
-        document.getElementById("canvas1").touchend = function (event) {
+        document.getElementById("canvas1").onmouseup = function (event) {
+            //document.getElementById("canvas1").touchend = function (event) {
             console.log('Up');
             xDist = 0;
             yDist = 0;
             dragging = false;
-
         }
 
         //フォームが持つデフォルトの動作をキャンセルするメソッドです。
         document.ontouchmove = function () { event.preventDefault(); }
-
     }
 
+    function o_Watch() {
+        ///////// 感度の減少メソッド //////////
+        if (Dist0 > 0) {
+            Dist0 = Dist0 - 0.4;
+        } else {
+            Dist0 = 0;
+        }
+
+        arr.push({ "t": Date.now() - startTime, "x": x0, "y": y0 });
+        _arr.push({ "t": Date.now() - startTime, "x": xDist, "y": yDist, "z": Dist0 });
+
+        console.log(Dist0);
+        console.log(Dist1);
+    }
 
 
     /* -----------------------------------------------------------------
     displayData 加速度データをグラフ表示する
     -------------------------------------------------------------------- */
-    function displayData() {
+    var o_value = 0;
 
-        if ( ! canvas || ! canvas.getContext ) { return false; }
+    function displayData() {
+        if (!canvas || !canvas.getContext) { return false; }
         _ctx.fillStyle = "rgb(0, 0, 0)";
-        _ctx.fillRect( 0, 0, canvas.clientWidth, canvas.clientHeight );
-        _ctx.lineWidth = 1 ;
+        _ctx.fillRect(0, 0, canvas.clientWidth, canvas.clientHeight);
+        _ctx.lineWidth = 1;
 
         // 最新から 300px 分のデータを取りだす。
         var varr = [];
-        if ( arr.length > canvas.clientWidth){
-            varr = arr.slice(-canvas.clientWidth,-1);
-        }else{
+        if (arr.length > canvas.clientWidth) {
+            varr = arr.slice(-canvas.clientWidth, -1);
+        } else {
             varr = arr;
         }
-        
+
         //軌跡
         // for ( idx in varr ){
         //     if ( idx > canvas.clientWidth ) break;
@@ -548,44 +685,65 @@
 
         // 加速度
         var _varr = [];
-        if ( _arr.length > canvas.clientWidth){
-            _varr = _arr.slice(-canvas.clientWidth,-1);
-        }else{
+        if (_arr.length > canvas.clientWidth) {
+            _varr = _arr.slice(-canvas.clientWidth, -1);
+        } else {
             _varr = _arr;
         }
 
-        for ( idx in _varr ){
-            if ( idx > _canvas.clientWidth ) break;
+        for (idx in _varr) {
+            if (idx > _canvas.clientWidth) break;
             var dat = _varr[idx];
 
             // X 軸加速度を赤の線で表示する
-            var dy1 = _canvas.clientHeight/2 + dat.x * 5.0;
             var dx = idx;
-            _ctx.strokeStyle = "red";
+            var dy1 = _canvas.clientHeight / 2 + dat.x * 5.0;
+            _ctx.strokeStyle = "green";
             _ctx.beginPath();
-            _ctx.moveTo(dx,dy1);
-            _ctx.lineTo(dx-1,_preX);
+            _ctx.moveTo(dx, dy1);
+            _ctx.lineTo(dx - 1, _preX);
             _ctx.stroke();
 
             // Y 軸加速度を青の線で表示する
-            var dy2 = _canvas.clientHeight/2 + dat.y * 5.0;
+            var dy2 = _canvas.clientHeight / 2 + dat.y * 5.0;
             _ctx.strokeStyle = "blue";
             _ctx.beginPath();
-            _ctx.moveTo(dx,dy2);
-            _ctx.lineTo(dx-1,_preY);
+            _ctx.moveTo(dx, dy2);
+            _ctx.lineTo(dx - 1, _preY);
             _ctx.stroke();
-            
+
+            // Z 軸加速度を赤の線で表示する
+            var dy3 = _canvas.clientHeight - dat.z;
+
+            /////Check Limit
+            // if (dy3 > _canvas.clientHeight) {
+            //     dy3 = _canvas.clientHeight;
+            // }
+            // else if (dy3 < 0) {
+            //     dy3 = 0;
+            // }
+            _ctx.strokeStyle = "red";
+            _ctx.beginPath();
+            _ctx.moveTo(dx, dy3);
+            _ctx.lineTo(dx - 1, _preZ);
+            _ctx.stroke();
+
             // 次のデータを表示するときに前のデータから線を描く用
             _preX = dy1;
             _preY = dy2;
+            _preZ = dy3;
+            o_value = 1.0 - (dy3 / _canvas.clientHeight);
+            value_text.text = o_value;
+            //console.log(dy3);
         }
 
 
     }
 
     // ブラウザのレンダリングのタイミングにあわせて表示を更新
-    (function loop(){
+    (function loop() {
         displayData();
+
         // update();
         window.requestAnimationFrame(loop);
     }());
