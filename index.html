@@ -534,8 +534,8 @@
 
     window.onload = function () {
         // Click ON
-        //document.getElementById("canvas1").onmousedown = function (event) {
-        document.getElementById("canvas1").ontouchstart = function (event) {
+        document.getElementById("canvas1").onmousedown = function (event) {
+            //document.getElementById("canvas1").ontouchstart = function (event) {
             //console.log('Down');
             if (event.changedTouches) {
                 x0 = event.changedTouches[0].pageX;
@@ -552,8 +552,8 @@
             voice_list[previous_num].play();
         }
         //Drag Over
-        //document.getElementById("canvas1").onmousemove = function (event) {
-        document.getElementById("canvas1").ontouchmove = function (event) {
+        document.getElementById("canvas1").onmousemove = function (event) {
+            //document.getElementById("canvas1").ontouchmove = function (event) {
             //console.log('Drag');
             if (event.changedTouches) {
                 xDist = event.changedTouches[0].pageX - x0;
@@ -645,8 +645,8 @@
         }
 
         //Mouse UP
-        //document.getElementById("canvas1").onmouseup = function (event) {
-        document.getElementById("canvas1").touchend = function (event) {
+        document.getElementById("canvas1").onmouseup = function (event) {
+            //document.getElementById("canvas1").touchend = function (event) {
             console.log('Up');
             xDist = 0;
             yDist = 0;
@@ -668,8 +668,8 @@
         arr.push({ "t": Date.now() - startTime, "x": x0, "y": y0 });
         _arr.push({ "t": Date.now() - startTime, "x": xDist, "y": yDist, "z": Dist0 });
 
-        // console.log(Dist0);
-        // console.log(Dist1);
+        console.log(Dist0);
+        console.log(Dist1);
     }
 
 
