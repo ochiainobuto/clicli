@@ -534,8 +534,8 @@
 
     window.onload = function () {
         // Click ON
-        document.getElementById("canvas1").onmousedown = function (event) {
-            //document.getElementById("canvas1").ontouchstart = function (event) {
+        //document.getElementById("canvas1").onmousedown = function (event) {
+        document.getElementById("canvas1").ontouchstart = function (event) {
             //console.log('Down');
             if (event.changedTouches) {
                 x0 = event.changedTouches[0].pageX;
@@ -552,9 +552,11 @@
             voice_list[previous_num].play();
         }
         //Drag Over
-        document.getElementById("canvas1").onmousemove = function (event) {
-            //document.getElementById("canvas1").ontouchmove = function (event) {
+        //document.getElementById("canvas1").onmousemove = function (event) {
+        document.getElementById("canvas1").ontouchmove = function (event) {
             //console.log('Drag');
+
+            //こちらは携帯用のメソッド
             if (event.changedTouches) {
                 xDist = event.changedTouches[0].pageX - x0;
                 yDist = event.changedTouches[0].pageY - y0;
@@ -574,7 +576,20 @@
                 //arr.push({ "t": Date.now() - startTime, "x": x0, "y": y0 });
                 //_arr.push({ "t": Date.now() - startTime, "x": xDist, "y": yDist, "z": Dist0 });
                 drag();
+                stage.update();
+
+                ///// Sound Play
+                if (voice_list[previous_num].ended) {
+                    previous_num = Math.floor(Math.random() * voice_list.length);
+                    voice_list[previous_num].currentTime = 0;
+                    setTimeout(function () {
+                        voice_list[previous_num].play();
+                    }, 400);
+                    //voice_list[previous_num].play();
+                }
+                console.log('携帯');
             }
+            //こちらはPC用のメソッド
             else {
                 //console.log(dragging);
                 if (dragging == true) {
@@ -598,22 +613,7 @@
 
                     //Drag中に大きくする
                     drag();
-
-                    console.log('A');
-                    value_text.text = 'A';
-                    previous_num = Math.floor(Math.random() * voice_list.length);
-                    console.log('B');
-                    value_text.text = 'B';
-                    voice_list[previous_num].currentTime = 0;
-                    console.log('C');
-                    value_text.text = 'C';
-                    // setTimeout(function () {
-                    //     voice_list[previous_num].play();
-                    // }, 400);
-                    value_text.text = previous_num;
-                    console.log('D');
                     stage.update();
-                    console.log('E');
 
                     ///// Sound Play
                     if (voice_list[previous_num].ended) {
@@ -622,10 +622,8 @@
                         setTimeout(function () {
                             voice_list[previous_num].play();
                         }, 400);
-                        //voice_list[previous_num].play();
                     }
-                    console.log('F');
-                    value_text.text = previous_num;
+
                 }
             }
 
@@ -645,8 +643,8 @@
         }
 
         //Mouse UP
-        document.getElementById("canvas1").onmouseup = function (event) {
-            //document.getElementById("canvas1").touchend = function (event) {
+        //document.getElementById("canvas1").onmouseup = function (event) {
+        document.getElementById("canvas1").touchend = function (event) {
             console.log('Up');
             xDist = 0;
             yDist = 0;
