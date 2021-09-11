@@ -599,17 +599,21 @@
                     //Drag中に大きくする
                     drag();
 
+                    console.log('A');
                     value_text.text = 'A';
                     previous_num = Math.floor(Math.random() * voice_list.length);
+                    console.log('B');
                     value_text.text = 'B';
                     voice_list[previous_num].currentTime = 0;
+                    console.log('C');
                     value_text.text = 'C';
                     // setTimeout(function () {
                     //     voice_list[previous_num].play();
                     // }, 400);
                     value_text.text = previous_num;
-
+                    console.log('D');
                     stage.update();
+                    console.log('E');
 
                     ///// Sound Play
                     if (voice_list[previous_num].ended) {
@@ -620,7 +624,7 @@
                         }, 400);
                         //voice_list[previous_num].play();
                     }
-
+                    console.log('F');
                     value_text.text = previous_num;
                 }
             }
@@ -664,8 +668,8 @@
         arr.push({ "t": Date.now() - startTime, "x": x0, "y": y0 });
         _arr.push({ "t": Date.now() - startTime, "x": xDist, "y": yDist, "z": Dist0 });
 
-        console.log(Dist0);
-        console.log(Dist1);
+        // console.log(Dist0);
+        // console.log(Dist1);
     }
 
 
